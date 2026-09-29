@@ -529,22 +529,14 @@
                         </div>
 
                         <div class="branch" style="gap: 15px;">
+                            <!-- NODO GLOBALIZADO: Calidad y Planeación -->
                             <div class="branch">
                                 <div class="node n-teal interactive" data-title="GESTIÓN CALIDAD">Dirección Calidad<br>y Planeación</div>
-                                <div class="connector-v" style="height: 10px;"></div>
-                                <div class="sub-group">
-                                    <div class="node n-coord interactive" data-title="GESTIÓN CALIDAD">Coord. Calidad<br>y Planeación</div>
-                                </div>
                             </div>
 
+                            <!-- NODO GLOBALIZADO: Secretaría General -->
                             <div class="branch">
                                 <div class="node n-teal interactive" data-title="GESTIÓN JURÍDICA Y LEGAL">Secretaría General</div>
-                                <div class="connector-v" style="height: 10px;"></div>
-                                <div class="sub-group">
-                                    <div class="node n-yellow interactive" data-title="GESTIÓN JURÍDICA Y LEGAL">Jefatura Judicial</div>
-                                    <div class="node n-yellow interactive" data-title="GESTIÓN JURÍDICA Y LEGAL">Jefatura<br>Contratación</div>
-                                    <div class="node n-coord interactive" data-title="GESTIÓN JURÍDICA Y LEGAL">Coord. Jurídica</div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -566,6 +558,7 @@
                                 <div class="node n-yellow interactive" data-title="CONCURRENCIA">Auditoría<br>Concurrente</div>
                                 <div class="node n-yellow interactive" data-title="SEGUIMIENTO A LA RED">Apoyo a Regiones</div>
                                 <div class="node n-yellow interactive" data-title="ADQUISICIONES">Adquisiciones</div>
+                                <div class="node n-yellow interactive" data-title="MEDICAMENTOS">Medicamentos</div>
                                 <div class="node n-coord interactive" data-title="PROGRAMAS ESPECIALES">Prog. Especiales</div>
                             </div>
                         </div>
@@ -608,15 +601,9 @@
                     <div class="connector-v" style="height: 15px;"></div>
 
                     <div class="row" style="gap: 15px;">
+                        <!-- NODO GLOBALIZADO: Dirección Tecnología -->
                         <div class="branch">
                             <div class="node n-teal interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Dirección<br>Tecnología</div>
-                            <div class="connector-v" style="height: 10px;"></div>
-                            <div class="sub-group">
-                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Software</div>
-                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Infraestructura</div>
-                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Analítica</div>
-                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Soporte<br>Tecnológico</div>
-                            </div>
                         </div>
 
                         <div class="branch" style="gap: 8px;">
@@ -632,7 +619,7 @@
     </div>
 </div>
 
-<!-- ================= MODAL 1: RESUMEN DEL ÁREA (Por Macroproceso) ================= -->
+<!-- ================= MODAL 1: RESUMEN DEL ÁREA ================= -->
 <div id="summaryModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -693,12 +680,19 @@
 
 <script>
     let reportesPorArea = {};
-    let currentDetailReports = []; // Almacena la lista activa actual para el modal
+    let currentDetailReports = []; 
     const EXCEL_FILE_URL = "INVENTARIO DOCUMENTACIÓN E INDICADORES VF.xlsx?t=" + new Date().getTime();
 
     function normalizarTexto(texto) {
         if (!texto) return "";
         return texto.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
+    }
+
+    // Formatea el texto con la primera letra en mayúscula y el resto en minúscula
+    function formatearTexto(texto) {
+        if (!texto) return "";
+        let s = String(texto).trim().toLowerCase();
+        return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
     function esValido(val) {
@@ -762,7 +756,6 @@
 
             reportesPorArea = {};
 
-            // Variables de contexto para forward-fill en celdas combinadas de Excel
             let lastCtx = {
                 area: "",
                 macroproceso: "",
@@ -788,9 +781,9 @@
                 let indFormula = nRow["indicadores"];
                 let indNombre = nRow["nombre del indicador"];
 
-                // Actualización de contexto cuando la celda no está en blanco
                 if (esValido(areaVal)) lastCtx.area = String(areaVal).trim();
-                if (esValido(macroVal)) lastCtx.macroproceso = String(macroVal).trim();
+                // Formatear Macroproceso: Primera mayúscula y resto minúscula
+                if (esValido(macroVal)) lastCtx.macroproceso = formatearTexto(macroVal);
                 if (esValido(tipoVal)) lastCtx.tipo = String(tipoVal).trim();
                 if (esValido(codigoVal)) lastCtx.codigo = String(codigoVal).trim();
                 if (esValido(nombreVal)) lastCtx.nombre = String(nombreVal).trim();
@@ -807,7 +800,6 @@
                 let currentLider = lastCtx.lider || "Sin Especificar";
                 let currentFecha = lastCtx.fechaGen || "N/D";
 
-                // Clave para identificar de manera única cada documento
                 let docKey = (currentCodigo ? currentCodigo.toLowerCase() : "") + "|||" + currentNombre.toLowerCase();
 
                 if (!reportesPorArea[currentArea]) {
@@ -819,8 +811,6 @@
                 }
 
                 let subareaDocs = reportesPorArea[currentArea].subareas[currentMacro];
-
-                // Verificar si este documento ya fue agregado previamente
                 let docObj = subareaDocs.find(d => d.docKey === docKey);
 
                 if (!docObj) {
@@ -831,7 +821,7 @@
                         codigo: currentCodigo,
                         nombre_doc: currentNombre,
                         reporte: tituloDoc,
-                        estado: currentLider, // Mapeado al filtro de líder
+                        estado: currentLider, 
                         fecha_generacion: currentFecha,
                         indicadores: []
                     };
@@ -839,7 +829,6 @@
                     reportesPorArea[currentArea].total++;
                 }
 
-                // Si la fila trae un indicador válido, lo consolidamos en el array del documento
                 if (esValido(indNombre)) {
                     let formulaTxt = esValido(indFormula) ? String(indFormula).trim() : "Sin fórmula registrada";
                     let nombreIndTxt = String(indNombre).trim();
@@ -948,7 +937,6 @@
         let currentDetailFilter = null; 
         let currentStateFilter = "Todos"; 
 
-        // Generar filtro por Líder
         stateFilterContainer.style.display = "flex";
         const uniqueStates = [...new Set(reports.map(r => r.estado))].sort();
         let stateHtml = `<span class="state-filters-label">Filtrar por Líder:</span>`;
@@ -961,7 +949,6 @@
         stateFilterContainer.innerHTML = stateHtml;
 
         function renderDetailView() {
-            
             let stateFilteredReports = reports;
             if (currentStateFilter !== "Todos") {
                 stateFilteredReports = reports.filter(r => r.estado === currentStateFilter);
@@ -1014,7 +1001,7 @@
                 return a.reporte.localeCompare(b.reporte);
             });
 
-            currentDetailReports = sorted; // Guardamos para referencia del Modal 3
+            currentDetailReports = sorted;
 
             if (sorted.length === 0) {
                 listContainer.innerHTML = "<p style='color: #666; font-size: 13px; font-style: italic; margin-top: 15px;'>No hay resultados para la combinación de filtros seleccionada.</p>";
@@ -1027,7 +1014,6 @@
                 let fechaLab = rep.fecha_generacion && rep.fecha_generacion !== "N/D" ? rep.fecha_generacion : "N/D";
                 let liderTxt = rep.estado !== "Sin Especificar" ? rep.estado : "No asignado";
 
-                // Renderizar la lista de todos los indicadores del documento
                 let indicatorsHtml = "";
                 if (rep.indicadores && rep.indicadores.length > 0) {
                     let indListHtml = "";
@@ -1077,7 +1063,6 @@
             
             listContainer.innerHTML = htmlList;
 
-            // Asignar los eventos de clic a los botones "Ver Fórmula"
             listContainer.querySelectorAll('.btn-formula').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -1090,7 +1075,6 @@
             });
         }
 
-        // Eventos del filtro de Líder
         stateFilterContainer.querySelectorAll('.state-pill').forEach(pill => {
             pill.addEventListener('click', function() {
                 currentStateFilter = this.getAttribute('data-state');
@@ -1104,7 +1088,6 @@
         detailModal.style.display = "block";
     }
 
-    // FUNCIÓN PARA MOSTRAR EL MODAL 3 (FÓRMULA DEL INDICADOR)
     function showIndicatorModal(doc, ind) {
         const bodyEl = document.getElementById("indicatorModalBody");
 
