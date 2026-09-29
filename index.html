@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organigrama Savia Salud EPS</title>
+    <title>Inventario Calidad y Planeación</title>
     
     <!-- LIBRERÍA PARA LEER EXCEL EN EL NAVEGADOR -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -11,11 +11,11 @@
     <style>
         :root {
             /* Colores solicitados */
-            --dark-blue: rgb(36, 75, 90);      /* Staff y Subgerencias */
-            --teal: rgb(0, 169, 143);          /* Direcciones */
-            --yellow: rgb(240, 236, 115);      /* Jefaturas */
-            --orange: rgb(237, 199, 162);      /* Gerencia */
-            --coord-blue: rgb(75, 115, 130);   /* Coordinaciones */
+            --dark-blue: rgb(36, 75, 90);      
+            --teal: rgb(0, 169, 143);          
+            --yellow: rgb(240, 236, 115);      
+            --orange: rgb(237, 199, 162);      
+            --coord-blue: rgb(75, 115, 130);   
             
             --orange-border: #dcae85;
             --grey: #e9ecef;
@@ -434,7 +434,7 @@
 <div class="org-wrapper">
     <div class="header-logo">
         <img src="Logo.png" alt="Logo Savia Salud EPS" onerror="this.style.display='none'">
-        <h2>Inventario Dirección de Tecnología e Información</h2>
+        <h2>Inventario Calidad y Planeación</h2>
     </div>
 
     <div id="loading-indicator">Leyendo Datos en vivo...</div>
@@ -448,43 +448,43 @@
     <div class="chart-viewport" id="chartViewport">
         <div class="org-chart" id="orgChart">
             
-            <!-- RAIZ: 1.0 GERENCIA GENERAL -->
+            <!-- RAIZ: GERENCIA GENERAL (Vinculada al PROCESO 'GESTIÓN ESTRÁTEGICA') -->
             <div class="branch">
-                <div class="node n-orange node-large interactive" data-title="Gerencia General" style="font-weight: 700;">Gerencia General</div>
+                <div class="node n-orange node-large interactive" data-title="GESTIÓN ESTRÁTEGICA">Gerencia General</div>
                 <div class="connector-v" style="height: 25px;"></div>
             </div>
 
-            <!-- LOS 4 PILARES PRINCIPALES -->
             <div class="level-split">
                 <!-- ================== 1.1 STAFF GERENCIA ================== -->
                 <div class="branch">
                     <div class="connector-v" style="position: absolute; top: -25px; height: 25px;"></div>
-                    <div class="node n-dark node-medium interactive" data-title="Staff Gerencia">Staff Gerencia</div>
+                    <div class="node n-dark node-medium">Staff Gerencia</div>
                     <div class="connector-v" style="height: 15px;"></div>
                     
                     <div class="row" style="gap: 15px;">
                         <div class="branch" style="gap: 8px;">
-                            <div class="node n-staff interactive" data-title="Oficial Cumplimiento">Oficial Cumplimiento</div>
-                            <div class="node n-yellow interactive" data-title="Jefatura Comunicaciones">Jefatura<br>Comunicaciones</div>
-                            <div class="node n-teal interactive" data-title="Dirección Auditoría Interna">Dirección<br>Auditoría Interna</div>
+                            <!-- Mapeos ajustados a la columna PROCESO del Excel -->
+                            <div class="node n-staff interactive" data-title="OFICIAL CUMPLIMIENTO">Oficial Cumplimiento</div>
+                            <div class="node n-yellow interactive" data-title="GESTIÓN DEL RELACIONAMIENTO">Jefatura<br>Comunicaciones</div>
+                            <div class="node n-teal interactive" data-title="AUDITORÍA INTERNA GENERAL">Dirección<br>Auditoría Interna</div>
                         </div>
 
                         <div class="branch" style="gap: 15px;">
                             <div class="branch">
-                                <div class="node n-teal interactive" data-title="Dirección Calidad y Planeación">Dirección Calidad<br>y Planeación</div>
+                                <div class="node n-teal interactive" data-title="GESTIÓN CALIDAD">Dirección Calidad<br>y Planeación</div>
                                 <div class="connector-v" style="height: 10px;"></div>
                                 <div class="sub-group">
-                                    <div class="node n-coord interactive" data-title="Dirección Calidad y Planeación">Coord. Calidad<br>y Planeación</div>
+                                    <div class="node n-coord interactive" data-title="GESTIÓN CALIDAD">Coord. Calidad<br>y Planeación</div>
                                 </div>
                             </div>
 
                             <div class="branch">
-                                <div class="node n-teal interactive" data-title="Secretaria general">Secretaría General</div>
+                                <div class="node n-teal interactive" data-title="GESTIÓN JURÍDICA Y LEGAL">Secretaría General</div>
                                 <div class="connector-v" style="height: 10px;"></div>
                                 <div class="sub-group">
-                                    <div class="node n-yellow interactive" data-title="Jefatura Judicial">Jefatura Judicial</div>
-                                    <div class="node n-yellow interactive" data-title="Jefatura Contratación">Jefatura<br>Contratación</div>
-                                    <div class="node n-coord interactive" data-title="Coordinación Juridica">Coord. Jurídica</div>
+                                    <div class="node n-yellow interactive" data-title="GESTIÓN JURÍDICA Y LEGAL">Jefatura Judicial</div>
+                                    <div class="node n-yellow interactive" data-title="GESTIÓN JURÍDICA Y LEGAL">Jefatura<br>Contratación</div>
+                                    <div class="node n-coord interactive" data-title="GESTIÓN JURÍDICA Y LEGAL">Coord. Jurídica</div>
                                 </div>
                             </div>
                         </div>
@@ -494,37 +494,37 @@
                 <!-- ================== 1.2 SUBGERENCIA DE SALUD ================== -->
                 <div class="branch">
                     <div class="connector-v" style="position: absolute; top: -25px; height: 25px;"></div>
-                    <div class="node n-dark node-medium interactive" data-title="Subgerencia de Salud">Subgerencia de Salud</div>
+                    <div class="node n-dark node-medium">Subgerencia de Salud</div>
                     <div class="connector-v" style="height: 15px;"></div>
 
                     <div class="row" style="gap: 15px;">
                         <div class="branch">
-                            <div class="node n-teal interactive" data-title="Dirección Acceso a Servicios">Dirección Acceso<br>a Servicios</div>
+                            <div class="node n-teal interactive" data-title="DIRECCIÓN DE ACCESO">Dirección Acceso<br>a Servicios</div>
                             <div class="connector-v" style="height: 10px;"></div>
                             <div class="sub-group">
-                                <div class="node n-yellow interactive" data-title="Jefatura Autorizaciones">Jef. Autorizaciones</div>
-                                <div class="node n-yellow interactive" data-title="Jefatura Centro Regulador">Centro Regulador</div>
-                                <div class="node n-yellow interactive" data-title="Jefatura Auditoría Concurrente">Auditoría<br>Concurrente</div>
-                                <div class="node n-yellow interactive" data-title="Apoyo a Regiones">Apoyo a Regiones</div>
-                                <div class="node n-yellow interactive" data-title="Jefatura Adquisiciones">Adquisiciones</div>
-                                <div class="node n-coord interactive" data-title="Coordinación Programas Especiales">Prog. Especiales</div>
+                                <div class="node n-yellow interactive" data-title="AUTORIZACIONES">Jef. Autorizaciones</div>
+                                <div class="node n-yellow interactive" data-title="CENTRO REGULADOR">Centro Regulador</div>
+                                <div class="node n-yellow interactive" data-title="CONCURRENCIA">Auditoría<br>Concurrente</div>
+                                <div class="node n-yellow interactive" data-title="SEGUIMIENTO A LA RED">Apoyo a Regiones</div>
+                                <div class="node n-yellow interactive" data-title="ADQUISICIONES">Adquisiciones</div>
+                                <div class="node n-coord interactive" data-title="PROGRAMAS ESPECIALES">Prog. Especiales</div>
                             </div>
                         </div>
 
                         <div class="branch" style="gap: 15px;">
                             <div class="branch">
-                                <div class="node n-teal interactive" data-title="Dirección Riesgo en Salud">Dirección Riesgo<br>en Salud</div>
+                                <div class="node n-teal interactive" data-title="DIRECCIÓN GESTIÓN DEL RIESGO">Dirección Riesgo<br>en Salud</div>
                                 <div class="connector-v" style="height: 10px;"></div>
                                 <div class="sub-group">
-                                    <div class="node n-coord interactive" data-title="Epidemiología">Epidemiología</div>
-                                    <div class="node n-coord interactive" data-title="Salud Pública">Salud Pública</div>
-                                    <div class="node n-coord interactive" data-title="Alto Costo">Alto Costo</div>
+                                    <div class="node n-coord interactive" data-title="EPIDEMIOLOGÍA">Epidemiología</div>
+                                    <div class="node n-coord interactive" data-title="SALUD PÚBLICA">Salud Pública</div>
+                                    <div class="node n-coord interactive" data-title="ALTO COSTO">Alto Costo</div>
                                 </div>
                             </div>
 
                             <div class="branch" style="gap: 8px;">
-                                <div class="node n-yellow interactive" data-title="Jefatura Cuentas médicas">Jefatura<br>Cuentas Médicas</div>
-                                <div class="node n-yellow interactive" data-title="Jefatura Atención al usuario">Jefatura<br>Atención al Usuario</div>
+                                <div class="node n-yellow interactive" data-title="CUENTAS MÉDICAS">Jefatura<br>Cuentas Médicas</div>
+                                <div class="node n-yellow interactive" data-title="ATENCIÓN AL USUARIO">Jefatura<br>Atención al Usuario</div>
                             </div>
                         </div>
                     </div>
@@ -533,59 +533,56 @@
                 <!-- ================== 1.3 SUBGERENCIA FINANCIERA ================== -->
                 <div class="branch">
                     <div class="connector-v" style="position: absolute; top: -25px; height: 25px;"></div>
-                    <div class="node n-dark node-medium interactive" data-title="Subgerencia Financiera">Subgerencia<br>Financiera</div>
+                    <div class="node n-dark node-medium interactive" data-title="Gestion Financiera">Subgerencia<br>Financiera</div>
                     <div class="connector-v" style="height: 15px;"></div>
 
                     <div class="branch" style="gap: 15px;">
-                        <div class="node n-teal interactive" data-title="Dirección Contabilidad y Presupuesto">Dirección<br>Contabilidad</div>
-                        <div class="node n-teal interactive" data-title="Dirección Tesorería y cartera">Dirección<br>Tesorería y Cartera</div>
+                        <div class="node n-teal interactive" data-title="Contabilidad y Presupuesto">Dirección<br>Contabilidad</div>
+                        <div class="node n-teal interactive" data-title="Tesorería y Cartera">Dirección<br>Tesorería y Cartera</div>
                     </div>
                 </div>
 
                 <!-- ================== 1.4 SUBGERENCIA ADMINISTRATIVA ================== -->
                 <div class="branch">
                     <div class="connector-v" style="position: absolute; top: -25px; height: 25px;"></div>
-                    <div class="node n-dark node-medium interactive" data-title="Subgerencia Administrativa">Subgerencia<br>Administrativa</div>
+                    <div class="node n-dark node-medium">Subgerencia<br>Administrativa</div>
                     <div class="connector-v" style="height: 15px;"></div>
 
                     <div class="row" style="gap: 15px;">
                         <div class="branch">
-                            <div class="node n-teal interactive" data-title="Dirección de tecnología y seguridad informática">Dirección<br>Tecnología</div>
+                            <div class="node n-teal interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Dirección<br>Tecnología</div>
                             <div class="connector-v" style="height: 10px;"></div>
                             <div class="sub-group">
-                                <div class="node n-coord interactive" data-title="Coordinación Software y Arquitectura">Coord. Software</div>
-                                <!-- AQUI ESTÁ EL AJUSTE DEL NOMBRE -->
-                                <div class="node n-coord interactive" data-title="Coordinación de Infraestructura y seguridad">Coord. Infraestructura</div>
-                                <div class="node n-coord interactive" data-title="Coordinación Analítica y ciencia del dato">Coord. Analítica</div>
-                                <div class="node n-coord interactive" data-title="Coordinación Soporte Tecnológico">Coord. Soporte<br>Tecnológico</div>
+                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Software</div>
+                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Infraestructura</div>
+                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Analítica</div>
+                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Soporte<br>Tecnológico</div>
                             </div>
                         </div>
 
                         <div class="branch" style="gap: 8px;">
-                            <div class="node n-yellow interactive" data-title="Jefatura Gestión humana">Jefatura<br>Gestión Humana</div>
-                            <div class="node n-yellow interactive" data-title="Jefatura Administrativa">Jefatura<br>Administrativa</div>
-                            <div class="node n-yellow interactive" data-title="Jefatura Aseguramiento">Jef. Aseguramiento<br>Recursos y Op.</div>
+                            <div class="node n-yellow interactive" data-title="GESTIÓN HUMANA">Jefatura<br>Gestión Humana</div>
+                            <div class="node n-yellow interactive" data-title="GESTIÓN ADMINISTRATIVA">Jefatura<br>Administrativa</div>
+                            <div class="node n-yellow interactive" data-title="GESTIÓN DEL ASEGURAMIENTO">Jef. Aseguramiento<br>Recursos y Op.</div>
                         </div>
-
                     </div>
                 </div>
-
             </div> 
 
         </div>
     </div>
 </div>
 
-<!-- ================= MODAL 1: RESUMEN DEL ÁREA (Distribución por área_pertenece) ================= -->
+<!-- ================= MODAL 1: RESUMEN DEL ÁREA (Distribución por Macroproceso) ================= -->
 <div id="summaryModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 id="summaryModalTitle">Área</h3>
+            <h3 id="summaryModalTitle">Proceso</h3>
             <span class="close" id="closeSummaryModal">&times;</span>
         </div>
         <div class="modal-body">
             <p style="font-size: 13px; color: #666; margin-top: 0; margin-bottom: 15px;">
-                Seleccione el área responsable / subcategoría para ver el detalle de sus activos:
+                Seleccione el <b>Macroproceso</b> para ver el detalle de los documentos:
             </p>
             <ul id="summaryModalList" style="list-style: none; padding: 0; margin: 0;">
                 <!-- Opciones inyectadas vía JS -->
@@ -607,11 +604,11 @@
         <div class="modal-body">
             
             <div class="filters-container">
-                <p style="font-size: 12px; color: #666; margin: 0;">Clic en una opción para filtrar por <b>Tipo</b>:</p>
+                <p style="font-size: 12px; color: #666; margin: 0;">Clic en una opción para filtrar por <b>Tipo de Documento</b>:</p>
                 <div class="modal-summary" id="detailModalSummary"></div>
                 
                 <div class="state-filters" id="detailStateFilterContainer">
-                    <!-- Los botones de estado se inyectan acá dinámicamente -->
+                    <!-- Los botones de líder (antes estado) se inyectan acá -->
                 </div>
             </div>
             
@@ -624,22 +621,23 @@
 
 <script>
     let reportesPorArea = {};
-    const EXCEL_FILE_URL = "INVENTARIO_TABLEROS.xlsx?t=" + new Date().getTime();
+    const EXCEL_FILE_URL = "INVENTARIO DOCUMENTACIÓN E INDICADORES VF.xlsx?t=" + new Date().getTime();
 
     function normalizarTexto(texto) {
         if (!texto) return "";
         return texto.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
     }
 
+    // Colores basados en los tipos del nuevo excel
     function getColorByActividad(tipo) {
         let tn = normalizarTexto(tipo);
-        if(tn.includes("conexiones")) return "#4CAF50"; 
-        if(tn.includes("informe interno")) return "#FF9800"; 
-        if(tn.includes("normativo")) return "#F44336"; 
-        if(tn.includes("bi")) return "#2196F3"; 
-        if(tn.includes("tablero interno")) return "#9C27B0"; 
-        if(tn.includes("mejora")) return "#0ea5e9"; 
-        if(tn.includes("nuevo")) return "#8b5cf6"; 
+        if(tn.includes("procedimiento")) return "#4CAF50"; 
+        if(tn.includes("formato")) return "#FF9800"; 
+        if(tn.includes("manual")) return "#F44336"; 
+        if(tn.includes("instructivo")) return "#2196F3"; 
+        if(tn.includes("caracterizacion") || tn.includes("caracterización")) return "#9C27B0"; 
+        if(tn.includes("politica")) return "#0ea5e9"; 
+        if(tn.includes("anexo")) return "#8b5cf6"; 
         return "var(--teal)"; 
     }
 
@@ -681,70 +679,46 @@
             const arrayBuffer = await response.arrayBuffer();
             const workbook = XLSX.read(arrayBuffer, { type: "array", cellDates: true });
 
-            const biLinks = {};
-            if (workbook.Sheets["BI"]) {
-                const dataBI = XLSX.utils.sheet_to_json(workbook.Sheets["BI"]);
-                dataBI.forEach(row => {
-                    let normRow = {};
-                    for(let key in row) normRow[normalizarTexto(key)] = row[key];
-                    let nombre = normRow["nombre del informe"] || normRow["nombre"];
-                    let url = normRow["url para insertar"] || normRow["url"] || normRow["link"];
-                    if (nombre && url) biLinks[nombre.toString().trim()] = url;
-                });
-            }
-
-            if (!workbook.Sheets["SP"]) throw new Error("La hoja 'SP' no existe.");
+            // Tomamos la primera hoja
+            const firstSheetName = workbook.SheetNames[0];
             
-            const dataSP_raw = XLSX.utils.sheet_to_json(workbook.Sheets["SP"], { raw: false, dateNF: "yyyy-mm-dd" });
+            // Usamos {range: 3} porque la data real (los títulos de la tabla) empieza en la fila 4 del excel
+            const data_raw = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { range: 3, raw: false, dateNF: "yyyy-mm-dd" });
 
-            dataSP_raw.forEach(row => {
+            data_raw.forEach(row => {
                 let nRow = {};
                 for (let key in row) { nRow[normalizarTexto(key)] = row[key]; }
                 
-                let areaRaw = nRow["area"];
+                // Mapeamos a la columna PROCESO
+                let areaRaw = nRow["proceso"];
                 if (!areaRaw || areaRaw.toString().trim().toLowerCase() === "nan" || areaRaw.toString().trim().toLowerCase() === "na") return;
                 let area = areaRaw.toString().trim();
                 
-                let areaPerRaw = nRow["area_pertenece"] || nRow["area pertenece"];
-                let area_per = areaPerRaw ? areaPerRaw.toString().trim() : "Gestión Propia";
+                // Usamos MACROPROCESO como categoría interna (antes área pertenece)
+                let areaPerRaw = nRow["macroproceso"];
+                let area_per = areaPerRaw ? areaPerRaw.toString().trim() : "General";
                 
-                let tipo = nRow["tipo"] ? nRow["tipo"].toString().trim() : "Desconocido";
-                let nombre = nRow["nombre_informe"] || nRow["nombre"] || "Sin Nombre";
+                let tipo = nRow["tipo de documentacion"] || nRow["tipo de documentación"] || "Desconocido";
+                let nombre = nRow["nombre del documento"] || "Sin Nombre";
+                let codigo = nRow["codigo del documento"] || "";
                 
-                let estado = nRow["estado"] || "Sin Especificar";
-                let programado = nRow["programado"] || "No";
-                let periodicidad = nRow["periodicidad"] || "N/D";
-                let fechaGen = nRow["fecha_ultma_generacion"] || nRow["fecha_ultima_generacion"] || nRow["fecha de ultima generacion"] || "N/D";
+                // Mapeamos LÍDER RESPONSABLE al filtro de 'estado' de la interfaz
+                let lider = nRow["lider responsable"] || nRow["líder responsable"] || "Sin Especificar"; 
+                let fechaGen = nRow["fecha de actualizacion"] || nRow["fecha de actualización"] || "N/D";
                 
-                let enlace = "#";
-                for (let key in row) {
-                    let val = row[key];
-                    if (typeof val === 'string' && val.trim().toLowerCase().startsWith("http")) {
-                        enlace = val.trim(); break;
-                    }
-                }
-                if (enlace === "#") {
-                    for (let key in nRow) {
-                        if (key.includes("ruta") || key.includes("link") || key.includes("url") || key.includes("enlace")) {
-                            if (nRow[key] && String(nRow[key]).trim() !== '') {
-                                enlace = String(nRow[key]).trim(); break;
-                            }
-                        }
-                    }
-                }
-                if (enlace === "#" && biLinks[nombre.toString().trim()]) enlace = biLinks[nombre.toString().trim()];
+                let indicador = nRow["nombre del indicador"] || "";
 
                 if (!reportesPorArea[area]) reportesPorArea[area] = { total: 0, subareas: {} };
                 if (!reportesPorArea[area].subareas[area_per]) reportesPorArea[area].subareas[area_per] = [];
 
+                let tituloDocumento = (codigo ? codigo + " - " : "") + nombre.toString().trim();
+
                 reportesPorArea[area].subareas[area_per].push({
-                    actividad: tipo,
-                    reporte: nombre.toString().trim(),
-                    enlace: enlace,
-                    estado: estado.toString().trim(),
-                    programado: programado.toString().trim(),
-                    periodicidad: periodicidad.toString().trim(),
-                    fecha_generacion: fechaGen.toString().trim()
+                    actividad: tipo.toString().trim(),
+                    reporte: tituloDocumento,
+                    estado: lider.toString().trim(), // Este es el filtro de Líder
+                    fecha_generacion: fechaGen.toString().trim(),
+                    indicador: indicador.toString().trim()
                 });
                 
                 reportesPorArea[area].total++;
@@ -799,7 +773,7 @@
                 if (normalizarTexto(k) === searchNorm) areaData = reportesPorArea[k];
             });
 
-            document.getElementById("summaryModalTitle").innerHTML = `${displayTitle}<br><span style="font-size:14px; font-weight:normal; opacity:0.9;">Total: ${totalCount}</span>`;
+            document.getElementById("summaryModalTitle").innerHTML = `${displayTitle}<br><span style="font-size:14px; font-weight:normal; opacity:0.9;">Total Documentos: ${totalCount}</span>`;
             
             const summaryList = document.getElementById("summaryModalList");
             summaryList.innerHTML = "";
@@ -823,14 +797,14 @@
                     summaryList.appendChild(li);
                 });
             } else {
-                summaryList.innerHTML = "<p style='padding:15px; color:#666; font-size:13px; font-style:italic;'>No hay registros asignados a esta área.</p>";
+                summaryList.innerHTML = "<p style='padding:15px; color:#666; font-size:13px; font-style:italic;'>No hay registros asignados a este proceso.</p>";
             }
 
             summaryModal.style.display = "block";
         });
     });
 
-    // ABRE MODAL 2 (Detalles Dinámicos + FILTROS INTELIGENTES)
+    // ABRE MODAL 2
     function openDetailModal(areaName, subName, reports) {
         summaryModal.style.display = "none";
         document.getElementById("detailModalTitle").innerText = `${areaName} > ${subName}`;
@@ -838,43 +812,34 @@
         const summaryGrid = document.getElementById("detailModalSummary");
         const stateFilterContainer = document.getElementById("detailStateFilterContainer");
 
-        // Condición para mostrar los Estados SOLAMENTE si es Software (según el cambio solicitado)
-        let isSoftware = normalizarTexto(subName).includes("software");
+        let currentDetailFilter = null; 
+        let currentStateFilter = "Todos"; 
 
-        let currentDetailFilter = null; // Filtro de Tipo (Cuadrícula)
-        let currentStateFilter = "Todos"; // Filtro de Estado (Píldoras)
-
-        if (!isSoftware) {
-            stateFilterContainer.style.display = "none";
-            stateFilterContainer.innerHTML = "";
-        } else {
-            stateFilterContainer.style.display = "flex";
-            const uniqueStates = [...new Set(reports.map(r => r.estado))].sort();
-            let stateHtml = `<span class="state-filters-label">Filtrar por Estado:</span>`;
-            stateHtml += `<div class="state-pill active-state" data-state="Todos">Todos</div>`;
-            uniqueStates.forEach(st => {
+        // Generar filtros de LÍDER RESPONSABLE
+        stateFilterContainer.style.display = "flex";
+        const uniqueStates = [...new Set(reports.map(r => r.estado))].sort();
+        let stateHtml = `<span class="state-filters-label">Filtrar por Líder:</span>`;
+        stateHtml += `<div class="state-pill active-state" data-state="Todos">Todos</div>`;
+        uniqueStates.forEach(st => {
+            if(st && st !== "Sin Especificar" && st.toLowerCase() !== "nan") {
                 stateHtml += `<div class="state-pill" data-state="${st}">${st}</div>`;
-            });
-            stateFilterContainer.innerHTML = stateHtml;
-        }
+            }
+        });
+        stateFilterContainer.innerHTML = stateHtml;
 
-        // Función que renderiza la tabla de arriba y la lista de abajo en tiempo real
         function renderDetailView() {
             
-            // 1. Filtrar primero por Estado (Píldora)
             let stateFilteredReports = reports;
-            if (isSoftware && currentStateFilter !== "Todos") {
+            if (currentStateFilter !== "Todos") {
                 stateFilteredReports = reports.filter(r => r.estado === currentStateFilter);
             }
 
-            // 2. Reconstruir la cuadrícula basada en lo que quedó del filtro de estado
             let typeCounts = {};
             stateFilteredReports.forEach(r => {
                 let t = r.actividad;
                 typeCounts[t] = (typeCounts[t] || 0) + 1;
             });
 
-            // Si el filtro de tipo seleccionado ya no existe, se deselecciona solo
             if (currentDetailFilter && !typeCounts[Object.keys(typeCounts).find(t => normalizarTexto(t) === currentDetailFilter)]) {
                 currentDetailFilter = null;
             }
@@ -891,7 +856,6 @@
                 `;
             });
 
-            // Reasignar clics a la nueva cuadrícula (Tipos)
             summaryGrid.querySelectorAll('.summary-item').forEach(item => {
                 item.addEventListener('click', function() {
                     let filterType = this.getAttribute('data-type');
@@ -904,7 +868,6 @@
                 });
             });
 
-            // 3. Renderizar Lista Inferior (Aplicando Ambos Filtros)
             const listContainer = document.getElementById("detailReportList");
             let finalReports = stateFilteredReports;
             
@@ -925,32 +888,22 @@
 
             let htmlList = "";
             sorted.forEach(rep => {
-                let linkHtml = `<span class="no-link">Sin enlace web</span>`;
-                if (rep.enlace && rep.enlace !== "#" && rep.enlace !== "nan" && rep.enlace.trim() !== "") {
-                    let href = rep.enlace.trim();
-                    if (!href.toLowerCase().startsWith("http")) href = "https://" + href;
-                    linkHtml = `<a href="${href}" class="btn-enlace" target="_blank" rel="noopener noreferrer">Abrir ↗</a>`;
-                }
-
                 let badgeColor = getColorByActividad(rep.actividad);
-                let isProg = normalizarTexto(rep.programado) === "si";
                 let fechaLab = rep.fecha_generacion && rep.fecha_generacion !== "N/D" ? rep.fecha_generacion : "N/D";
                 
-                // El estado solo se muestra si es Software
-                let estadoItem = !isSoftware ? "" : `<span><strong>Estado:</strong> ${rep.estado}</span>`;
+                let liderTxt = rep.estado !== "Sin Especificar" ? rep.estado : "No asignado";
+                let indicadorHtml = rep.indicador ? `<span><strong>Indicador:</strong> ${rep.indicador}</span>` : '';
                 
                 let metaHtml = `<div class="report-meta">
-                    ${estadoItem}
-                    <span><strong>Programado:</strong> ${isProg ? 'Sí' : 'No'}</span>
-                    ${isProg ? `<span><strong>Periodicidad:</strong> ${rep.periodicidad}</span>` : ''}
-                    <span><strong>Última Generación:</strong> ${fechaLab}</span>
+                    <span><strong>Líder:</strong> ${liderTxt}</span>
+                    <span><strong>Última Act.:</strong> ${fechaLab}</span>
+                    ${indicadorHtml}
                 </div>`;
 
                 htmlList += `
                     <div class="report-item">
                         <div class="report-header">
                             <span class="report-badge" style="background-color:${badgeColor}">${rep.actividad}</span>
-                            ${linkHtml}
                         </div>
                         <div class="report-title">${rep.reporte}</div>
                         ${metaHtml}
@@ -961,19 +914,16 @@
             listContainer.innerHTML = htmlList;
         }
 
-        // Asignar clics a las Píldoras de Estado (Solo al inicializar el Modal si es Software)
-        if (isSoftware) {
-            stateFilterContainer.querySelectorAll('.state-pill').forEach(pill => {
-                pill.addEventListener('click', function() {
-                    currentStateFilter = this.getAttribute('data-state');
-                    stateFilterContainer.querySelectorAll('.state-pill').forEach(el => el.classList.remove('active-state'));
-                    this.classList.add('active-state');
-                    renderDetailView(); 
-                });
+        // Asignar clics al filtro de Líder
+        stateFilterContainer.querySelectorAll('.state-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                currentStateFilter = this.getAttribute('data-state');
+                stateFilterContainer.querySelectorAll('.state-pill').forEach(el => el.classList.remove('active-state'));
+                this.classList.add('active-state');
+                renderDetailView(); 
             });
-        }
+        });
 
-        // Primera carga visual
         renderDetailView();
         detailModal.style.display = "block";
     }
