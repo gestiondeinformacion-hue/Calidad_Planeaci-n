@@ -510,7 +510,7 @@
             
             <!-- RAIZ: GERENCIA GENERAL -->
             <div class="branch">
-                <div class="node n-orange node-large interactive" data-title="GESTIÓN ESTRÁTEGICA">Gerencia General</div>
+                <div class="node n-orange node-large">Gerencia General</div>
                 <div class="connector-v" style="height: 25px;"></div>
             </div>
 
@@ -529,9 +529,9 @@
                         </div>
 
                         <div class="branch" style="gap: 15px;">
-                            <!-- NODO GLOBALIZADO: Calidad y Planeación -->
+                            <!-- NODO CONSOLIDADO: Calidad, Planeación, Gestión Estratégica e Innovación -->
                             <div class="branch">
-                                <div class="node n-teal interactive" data-title="GESTIÓN CALIDAD">Dirección Calidad<br>y Planeación</div>
+                                <div class="node n-teal interactive" data-title="GESTIÓN CALIDAD, GESTIÓN ESTRÁTEGICA, GESTIÓN DE LA INNOVACIÓN">Dirección Calidad<br>y Planeación</div>
                             </div>
 
                             <!-- NODO GLOBALIZADO: Secretaría General -->
@@ -550,7 +550,7 @@
 
                     <div class="row" style="gap: 15px;">
                         <div class="branch">
-                            <div class="node n-teal interactive" data-title="DIRECCIÓN DE ACCESO">Dirección Acceso<br>a Servicios</div>
+                            <div class="node n-teal interactive" data-title="DIRECCIÓN DE ACCESO, GESTIÓN DE ACCESO A SERVICIOS DE SALUD">Dirección Acceso<br>a Servicios</div>
                             <div class="connector-v" style="height: 10px;"></div>
                             <div class="sub-group">
                                 <div class="node n-yellow interactive" data-title="AUTORIZACIONES">Jef. Autorizaciones</div>
@@ -565,7 +565,7 @@
 
                         <div class="branch" style="gap: 15px;">
                             <div class="branch">
-                                <div class="node n-teal interactive" data-title="DIRECCIÓN GESTIÓN DEL RIESGO">Dirección Riesgo<br>en Salud</div>
+                                <div class="node n-teal interactive" data-title="DIRECCIÓN GESTIÓN DEL RIESGO, GESTIÓN DEL RIESGO EN SALUD">Dirección Riesgo<br>en Salud</div>
                                 <div class="connector-v" style="height: 10px;"></div>
                                 <div class="sub-group">
                                     <div class="node n-coord interactive" data-title="EPIDEMIOLOGÍA">Epidemiología</div>
@@ -575,7 +575,7 @@
                             </div>
 
                             <div class="branch" style="gap: 8px;">
-                                <div class="node n-yellow interactive" data-title="CUENTAS MÉDICAS">Jefatura<br>Cuentas Médicas</div>
+                                <div class="node n-yellow interactive" data-title="CUENTAS MÉDICAS, Cuentas Medicas">Jefatura<br>Cuentas Médicas</div>
                                 <div class="node n-yellow interactive" data-title="ATENCIÓN AL USUARIO">Jefatura<br>Atención al Usuario</div>
                             </div>
                         </div>
@@ -589,8 +589,8 @@
                     <div class="connector-v" style="height: 15px;"></div>
 
                     <div class="branch" style="gap: 15px;">
-                        <div class="node n-teal interactive" data-title="Contabilidad y Presupuesto">Dirección<br>Contabilidad</div>
-                        <div class="node n-teal interactive" data-title="Tesorería y Cartera">Dirección<br>Tesorería y Cartera</div>
+                        <div class="node n-teal interactive" data-title="Contabilidad y Presupuesto, Contablidad y Presupuesto">Dirección<br>Contabilidad</div>
+                        <div class="node n-teal interactive" data-title="Tesorería y Cartera, Tesoreria y Cartera">Dirección<br>Tesorería y Cartera</div>
                     </div>
                 </div>
 
@@ -601,9 +601,16 @@
                     <div class="connector-v" style="height: 15px;"></div>
 
                     <div class="row" style="gap: 15px;">
-                        <!-- NODO GLOBALIZADO: Dirección Tecnología -->
+                        <!-- DIRECCIÓN TECNOLOGÍA CON SUS COORDINACIONES RESTAURADAS -->
                         <div class="branch">
                             <div class="node n-teal interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Dirección<br>Tecnología</div>
+                            <div class="connector-v" style="height: 10px;"></div>
+                            <div class="sub-group">
+                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Software</div>
+                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Infraestructura</div>
+                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Analítica</div>
+                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Soporte<br>Tecnológico</div>
+                            </div>
                         </div>
 
                         <div class="branch" style="gap: 8px;">
@@ -722,11 +729,12 @@
                 node.appendChild(badge);
             }
             
-            const searchNorm = normalizarTexto(node.getAttribute("data-title"));
+            const titles = node.getAttribute("data-title") || "";
+            const searchNorms = titles.split(',').map(t => normalizarTexto(t));
             let count = 0;
             
             Object.keys(reportesPorArea).forEach(kArea => {
-                if (normalizarTexto(kArea) === searchNorm) {
+                if (searchNorms.includes(normalizarTexto(kArea))) {
                     count += reportesPorArea[kArea].total;
                 }
             });
@@ -782,7 +790,6 @@
                 let indNombre = nRow["nombre del indicador"];
 
                 if (esValido(areaVal)) lastCtx.area = String(areaVal).trim();
-                // Formatear Macroproceso: Primera mayúscula y resto minúscula
                 if (esValido(macroVal)) lastCtx.macroproceso = formatearTexto(macroVal);
                 if (esValido(tipoVal)) lastCtx.tipo = String(tipoVal).trim();
                 if (esValido(codigoVal)) lastCtx.codigo = String(codigoVal).trim();
@@ -877,10 +884,11 @@
         if (e.target === indicatorModal) indicatorModal.style.display = "none"; 
     });
 
-    // ABRE MODAL 1
+    // ABRE MODAL 1 (Soporta múltiples procesos combinados en data-title)
     document.querySelectorAll(".interactive").forEach(node => {
         node.addEventListener("click", () => {
-            const searchTitle = node.getAttribute("data-title");
+            const searchTitles = node.getAttribute("data-title") || "";
+            const searchNorms = searchTitles.split(',').map(t => normalizarTexto(t));
             
             let clone = node.cloneNode(true);
             let badge = clone.querySelector('.node-badge');
@@ -888,11 +896,18 @@
             if (badge) badge.remove();
             
             const displayTitle = clone.innerText.replace(/\n/g, " ");
-            const searchNorm = normalizarTexto(searchTitle);
             
-            let areaData = null;
+            let areaData = { total: 0, subareas: {} };
             Object.keys(reportesPorArea).forEach(k => {
-                if (normalizarTexto(k) === searchNorm) areaData = reportesPorArea[k];
+                if (searchNorms.includes(normalizarTexto(k))) {
+                    areaData.total += reportesPorArea[k].total;
+                    Object.keys(reportesPorArea[k].subareas).forEach(subName => {
+                        if (!areaData.subareas[subName]) {
+                            areaData.subareas[subName] = [];
+                        }
+                        areaData.subareas[subName].push(...reportesPorArea[k].subareas[subName]);
+                    });
+                }
             });
 
             document.getElementById("summaryModalTitle").innerHTML = `${displayTitle}<br><span style="font-size:14px; font-weight:normal; opacity:0.9;">Total Documentos: ${totalCount}</span>`;
