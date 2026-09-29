@@ -760,7 +760,21 @@
             const workbook = XLSX.read(arrayBuffer, { type: "array", cellDates: true });
 
             const firstSheetName = workbook.SheetNames[0];
-            const data_raw = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { range: 3, raw: false, dateNF: "yyyy-mm-dd" });
+            const sheet = workbook.Sheets[firstSheetName];
+
+            // 1. Detección DINÁMICA de la fila de encabezados
+            const sheetMatrix = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false });
+            let headerRowIndex = 0;
+            for (let i = 0; i < sheetMatrix.length; i++) {
+                const rowStr = sheetMatrix[i].map(cell => String(cell || "").toLowerCase());
+                if (rowStr.some(cell => cell.includes("proceso") || cell.includes("macroproceso") || cell.includes("código") || cell.includes("codigo"))) {
+                    headerRowIndex = i;
+                    break;
+                }
+            }
+
+            // 2. Leer la hoja desde la fila donde estén los títulos
+            const data_raw = XLSX.utils.sheet_to_json(sheet, { range: headerRowIndex, raw: false, dateNF: "yyyy-mm-dd" });
 
             reportesPorArea = {};
 
@@ -884,7 +898,7 @@
         if (e.target === indicatorModal) indicatorModal.style.display = "none"; 
     });
 
-    // ABRE MODAL 1 (Soporta múltiples procesos combinados en data-title)
+    // ABRE MODAL 1 (Soporta múltiples procesos combinados)
     document.querySelectorAll(".interactive").forEach(node => {
         node.addEventListener("click", () => {
             const searchTitles = node.getAttribute("data-title") || "";
