@@ -510,7 +510,7 @@
             
             <!-- RAIZ: GERENCIA GENERAL -->
             <div class="branch">
-                <div class="node n-orange node-large">Gerencia General</div>
+                <div class="node n-orange node-large interactive" data-title="GESTIÓN ESTRÁTEGICA, GESTIÓN DE LA INNOVACIÓN">Gerencia General</div>
                 <div class="connector-v" style="height: 25px;"></div>
             </div>
 
@@ -601,15 +601,15 @@
                     <div class="connector-v" style="height: 15px;"></div>
 
                     <div class="row" style="gap: 15px;">
-                        <!-- DIRECCIÓN TECNOLOGÍA CON SUS COORDINACIONES RESTAURADAS -->
+                        <!-- DIRECCIÓN TECNOLOGÍA Y SUS COORDINACIONES ACTUALIZADAS -->
                         <div class="branch">
-                            <div class="node n-teal interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Dirección<br>Tecnología</div>
+                            <div class="node n-teal interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN, Dirección de Tecnologia e Información, Dirección de Tecnología e Información, Dirección Tecnología, Dirección de Tecnología, Coordinación de Analitica y Ciencia del dato, Coordinación de Infraestructura y Seguridad Informatica, Coordinación de Software y Arquitectura, Coordinación de Soporte Tecnologico">Dirección<br>Tecnología</div>
                             <div class="connector-v" style="height: 10px;"></div>
                             <div class="sub-group">
-                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Software</div>
-                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Infraestructura</div>
-                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Analítica</div>
-                                <div class="node n-coord interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN">Coord. Soporte<br>Tecnológico</div>
+                                <div class="node n-coord interactive" data-title="Coordinación de Software y Arquitectura, Coordinación de Software, Coord. Software, Coordinación Software">Coord. Software</div>
+                                <div class="node n-coord interactive" data-title="Coordinación de Infraestructura y Seguridad Informatica, Coordinación de Infraestructura y Seguridad Informática, Coordinación de Infraestructura y seguridad, Coordinación Infraestructura, Coord. Infraestructura">Coord. Infraestructura</div>
+                                <div class="node n-coord interactive" data-title="Coordinación de Analitica y Ciencia del dato, Coordinación de Analítica y Ciencia del dato, Coordinación de Analítica, Coord. Analítica">Coord. Analítica</div>
+                                <div class="node n-coord interactive" data-title="Coordinación de Soporte Tecnologico, Coordinación de Soporte Tecnológico, Coordinación Soporte Tecnológico, Coord. Soporte Tecnológico">Coord. Soporte<br>Tecnológico</div>
                             </div>
                         </div>
 
@@ -695,7 +695,6 @@
         return texto.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
     }
 
-    // Formatea el texto con la primera letra en mayúscula y el resto en minúscula
     function formatearTexto(texto) {
         if (!texto) return "";
         let s = String(texto).trim().toLowerCase();
@@ -731,14 +730,23 @@
             
             const titles = node.getAttribute("data-title") || "";
             const searchNorms = titles.split(',').map(t => normalizarTexto(t));
-            let count = 0;
+            let matchedDocKeys = new Set();
             
             Object.keys(reportesPorArea).forEach(kArea => {
-                if (searchNorms.includes(normalizarTexto(kArea))) {
-                    count += reportesPorArea[kArea].total;
-                }
+                let isAreaMatch = searchNorms.includes(normalizarTexto(kArea));
+                
+                Object.keys(reportesPorArea[kArea].subareas).forEach(subName => {
+                    let isSubMatch = searchNorms.includes(normalizarTexto(subName));
+                    
+                    if (isAreaMatch || isSubMatch) {
+                        reportesPorArea[kArea].subareas[subName].forEach(doc => {
+                            matchedDocKeys.add(doc.docKey);
+                        });
+                    }
+                });
             });
             
+            let count = matchedDocKeys.size;
             badge.innerText = count;
             if (count > 0) {
                 badge.classList.add('has-data');
@@ -762,7 +770,7 @@
             const firstSheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[firstSheetName];
 
-            // 1. Detección DINÁMICA de la fila de encabezados
+            // Detección dinámica de la fila de encabezados
             const sheetMatrix = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false });
             let headerRowIndex = 0;
             for (let i = 0; i < sheetMatrix.length; i++) {
@@ -773,7 +781,6 @@
                 }
             }
 
-            // 2. Leer la hoja desde la fila donde estén los títulos
             const data_raw = XLSX.utils.sheet_to_json(sheet, { range: headerRowIndex, raw: false, dateNF: "yyyy-mm-dd" });
 
             reportesPorArea = {};
@@ -792,16 +799,16 @@
                 let nRow = {};
                 for (let key in row) { nRow[normalizarTexto(key)] = row[key]; }
                 
-                let areaVal = nRow["proceso"];
-                let macroVal = nRow["macroproceso"];
-                let tipoVal = nRow["tipo de documentacion"] || nRow["tipo de documentación"];
-                let codigoVal = nRow["codigo del documento"] || nRow["código del documento"];
-                let nombreVal = nRow["nombre del documento"];
-                let liderVal = nRow["lider responsable"] || nRow["líder responsable"];
-                let fechaVal = nRow["fecha de actualizacion"] || nRow["fecha de actualización"];
+                let areaVal = nRow["proceso"] || nRow["area"] || nRow["área"] || nRow["unidad"];
+                let macroVal = nRow["macroproceso"] || nRow["macro proceso"] || nRow["area_pertenece"] || nRow["area pertenece"] || nRow["subarea"] || nRow["subárea"];
+                let tipoVal = nRow["tipo de documentacion"] || nRow["tipo de documentación"] || nRow["tipo"];
+                let codigoVal = nRow["codigo del documento"] || nRow["código del documento"] || nRow["codigo"] || nRow["código"];
+                let nombreVal = nRow["nombre del documento"] || nRow["nombre_informe"] || nRow["nombre"] || nRow["documento"];
+                let liderVal = nRow["lider responsable"] || nRow["líder responsable"] || nRow["lider"] || nRow["líder"];
+                let fechaVal = nRow["fecha de actualizacion"] || nRow["fecha de actualización"] || nRow["fecha"];
 
-                let indFormula = nRow["indicadores"];
-                let indNombre = nRow["nombre del indicador"];
+                let indFormula = nRow["indicadores"] || nRow["formula"] || nRow["fórmula"];
+                let indNombre = nRow["nombre del indicador"] || nRow["indicador"];
 
                 if (esValido(areaVal)) lastCtx.area = String(areaVal).trim();
                 if (esValido(macroVal)) lastCtx.macroproceso = formatearTexto(macroVal);
@@ -898,7 +905,7 @@
         if (e.target === indicatorModal) indicatorModal.style.display = "none"; 
     });
 
-    // ABRE MODAL 1 (Soporta múltiples procesos combinados)
+    // ABRE MODAL 1 (Soporta búsqueda cruzada por Proceso y Macroproceso)
     document.querySelectorAll(".interactive").forEach(node => {
         node.addEventListener("click", () => {
             const searchTitles = node.getAttribute("data-title") || "";
@@ -912,16 +919,28 @@
             const displayTitle = clone.innerText.replace(/\n/g, " ");
             
             let areaData = { total: 0, subareas: {} };
+            let addedDocKeys = new Set();
+            
             Object.keys(reportesPorArea).forEach(k => {
-                if (searchNorms.includes(normalizarTexto(k))) {
-                    areaData.total += reportesPorArea[k].total;
-                    Object.keys(reportesPorArea[k].subareas).forEach(subName => {
+                let isAreaMatch = searchNorms.includes(normalizarTexto(k));
+                
+                Object.keys(reportesPorArea[k].subareas).forEach(subName => {
+                    let isSubMatch = searchNorms.includes(normalizarTexto(subName));
+                    
+                    if (isAreaMatch || isSubMatch) {
+                        let docs = reportesPorArea[k].subareas[subName];
                         if (!areaData.subareas[subName]) {
                             areaData.subareas[subName] = [];
                         }
-                        areaData.subareas[subName].push(...reportesPorArea[k].subareas[subName]);
-                    });
-                }
+                        docs.forEach(d => {
+                            if (!addedDocKeys.has(d.docKey)) {
+                                addedDocKeys.add(d.docKey);
+                                areaData.subareas[subName].push(d);
+                                areaData.total++;
+                            }
+                        });
+                    }
+                });
             });
 
             document.getElementById("summaryModalTitle").innerHTML = `${displayTitle}<br><span style="font-size:14px; font-weight:normal; opacity:0.9;">Total Documentos: ${totalCount}</span>`;
@@ -935,6 +954,7 @@
                 subKeys.forEach(subName => {
                     let reports = areaData.subareas[subName];
                     let count = reports.length;
+                    if (count === 0) return;
                     
                     const li = document.createElement("li");
                     li.className = "summary-option";
