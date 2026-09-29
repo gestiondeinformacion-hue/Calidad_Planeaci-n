@@ -10,7 +10,7 @@
 
     <style>
         :root {
-            /* Colores solicitados */
+            /* Colores corporativos */
             --dark-blue: rgb(36, 75, 90);      
             --teal: rgb(0, 169, 143);          
             --yellow: rgb(240, 236, 115);      
@@ -206,7 +206,7 @@
         }
         .modal-content {
             background-color: white;
-            margin: 5% auto;
+            margin: 4% auto;
             border-radius: 10px;
             width: 95%;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -267,7 +267,7 @@
         }
 
         /* ---- Modal 2 (Detalles) ---- */
-        #detailModal .modal-content { max-width: 750px; }
+        #detailModal .modal-content { max-width: 780px; }
 
         .filters-container {
             display: flex;
@@ -306,7 +306,7 @@
         .summary-item .s-text { display: flex; flex-direction: column; font-size: 11.5px; color: #555; line-height: 1.2; }
         .summary-item strong { font-size: 16px; color: var(--dark-blue); font-weight: 800; margin-top: 4px;}
 
-        /* Filtro de Estados (Píldoras) */
+        /* Filtro de Líderes (Píldoras) */
         .state-filters {
             display: flex;
             flex-wrap: wrap;
@@ -329,7 +329,6 @@
             color: #475569;
             border: 1px solid #cbd5e1;
             transition: all 0.2s;
-            text-transform: capitalize;
         }
         .state-pill:hover { background-color: #e2e8f0; }
         .state-pill.active-state {
@@ -339,7 +338,7 @@
         }
 
         .report-list {
-            max-height: 400px;
+            max-height: 420px;
             overflow-y: auto;
             padding-right: 5px;
             border-top: 1px solid var(--grey);
@@ -347,15 +346,18 @@
         }
         .report-list::-webkit-scrollbar { width: 6px; }
         .report-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        
         .report-item {
-            padding: 14px 0;
-            border-bottom: 1px dashed #cbd5e1;
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background-color: #fff;
             font-size: 13px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            gap: 6px;
         }
-        .report-item:last-child { border-bottom: none; }
         .report-header { display: flex; justify-content: space-between; width: 100%; align-items: center; }
         .report-badge {
             display: inline-block;
@@ -366,21 +368,8 @@
             color: white;
             text-transform: uppercase;
         }
-        .btn-enlace {
-            background-color: #f1f5f9;
-            color: #0369a1;
-            border: 1px solid #cbd5e1;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        .btn-enlace:hover { background-color: #e2e8f0; color: #0284c7; }
-        .no-link { color: #94a3b8; font-style: italic; font-size: 11px; }
         
-        .report-title { font-weight: 700; color: var(--dark-blue); margin: 8px 0 4px 0; font-size: 14px; line-height: 1.3; }
+        .report-title { font-weight: 700; color: var(--dark-blue); font-size: 14px; line-height: 1.3; }
         
         .report-meta {
             display: flex;
@@ -391,12 +380,56 @@
             background: #f8fafc;
             padding: 8px 12px;
             border-radius: 6px;
-            margin-top: 6px;
             border: 1px solid #e2e8f0;
             width: 100%;
         }
         .report-meta span { display: inline-flex; align-items: center; }
         .report-meta strong { margin-right: 5px; color: #1e293b; }
+
+        /* Contenedor de Indicadores en la tarjeta */
+        .indicators-container {
+            width: 100%;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-top: 4px;
+        }
+        .indicators-header {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 6px;
+        }
+        .indicator-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 12px;
+            color: #334155;
+        }
+        .indicator-item:last-child { border-bottom: none; }
+        .indicator-name { flex: 1; padding-right: 10px; line-height: 1.3; font-weight: 500; }
+        
+        .btn-formula {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .btn-formula:hover {
+            background-color: #0284c7;
+            color: #ffffff;
+            border-color: #0284c7;
+        }
 
         .btn-back {
             background: rgba(255,255,255,0.2);
@@ -412,6 +445,33 @@
         }
         .btn-back:hover { background: rgba(255,255,255,0.3); }
         .header-left { display: flex; align-items: center; }
+
+        /* ---- Modal 3 (Detalle del Indicador / Fórmula) ---- */
+        #indicatorModal .modal-content { max-width: 580px; }
+        
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid var(--teal);
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace, 'Segoe UI';
+            font-size: 12.5px;
+            color: #1e293b;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin-top: 8px;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid var(--teal);
+        }
+        .indicator-meta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 12.5px;
+            color: #475569;
+        }
+        .indicator-meta-item strong { color: var(--dark-blue); }
 
         /* Indicador de carga */
         #loading-indicator {
@@ -448,7 +508,7 @@
     <div class="chart-viewport" id="chartViewport">
         <div class="org-chart" id="orgChart">
             
-            <!-- RAIZ: GERENCIA GENERAL (Vinculada al PROCESO 'GESTIÓN ESTRÁTEGICA') -->
+            <!-- RAIZ: GERENCIA GENERAL -->
             <div class="branch">
                 <div class="node n-orange node-large interactive" data-title="GESTIÓN ESTRÁTEGICA">Gerencia General</div>
                 <div class="connector-v" style="height: 25px;"></div>
@@ -463,7 +523,6 @@
                     
                     <div class="row" style="gap: 15px;">
                         <div class="branch" style="gap: 8px;">
-                            <!-- Mapeos ajustados a la columna PROCESO del Excel -->
                             <div class="node n-staff interactive" data-title="OFICIAL CUMPLIMIENTO">Oficial Cumplimiento</div>
                             <div class="node n-yellow interactive" data-title="GESTIÓN DEL RELACIONAMIENTO">Jefatura<br>Comunicaciones</div>
                             <div class="node n-teal interactive" data-title="AUDITORÍA INTERNA GENERAL">Dirección<br>Auditoría Interna</div>
@@ -573,7 +632,7 @@
     </div>
 </div>
 
-<!-- ================= MODAL 1: RESUMEN DEL ÁREA (Distribución por Macroproceso) ================= -->
+<!-- ================= MODAL 1: RESUMEN DEL ÁREA (Por Macroproceso) ================= -->
 <div id="summaryModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -585,13 +644,13 @@
                 Seleccione el <b>Macroproceso</b> para ver el detalle de los documentos:
             </p>
             <ul id="summaryModalList" style="list-style: none; padding: 0; margin: 0;">
-                <!-- Opciones inyectadas vía JS -->
+                <!-- Inyectado vía JS -->
             </ul>
         </div>
     </div>
 </div>
 
-<!-- ================= MODAL 2: DETALLES DE REPORTES DINÁMICOS ================= -->
+<!-- ================= MODAL 2: DETALLES DE DOCUMENTOS ================= -->
 <div id="detailModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -608,19 +667,33 @@
                 <div class="modal-summary" id="detailModalSummary"></div>
                 
                 <div class="state-filters" id="detailStateFilterContainer">
-                    <!-- Los botones de líder (antes estado) se inyectan acá -->
+                    <!-- Botones de líder inyectados aquí -->
                 </div>
             </div>
             
             <div class="report-list" id="detailReportList">
-                <!-- Se inyecta la lista final aquí -->
+                <!-- Lista de documentos inyectada aquí -->
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MODAL 3: FÓRMULA DEL INDICADOR ================= -->
+<div id="indicatorModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: var(--dark-blue);">
+            <h3 id="indicatorModalTitle">Detalle del Indicador</h3>
+            <span class="close" id="closeIndicatorModal">&times;</span>
+        </div>
+        <div class="modal-body" id="indicatorModalBody">
+            <!-- Inyectado dinámicamente vía JS -->
         </div>
     </div>
 </div>
 
 <script>
     let reportesPorArea = {};
+    let currentDetailReports = []; // Almacena la lista activa actual para el modal
     const EXCEL_FILE_URL = "INVENTARIO DOCUMENTACIÓN E INDICADORES VF.xlsx?t=" + new Date().getTime();
 
     function normalizarTexto(texto) {
@@ -628,7 +701,12 @@
         return texto.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
     }
 
-    // Colores basados en los tipos del nuevo excel
+    function esValido(val) {
+        if (!val) return false;
+        let s = String(val).trim().toLowerCase();
+        return s !== "" && s !== "nan" && s !== "na" && s !== "n/a";
+    }
+
     function getColorByActividad(tipo) {
         let tn = normalizarTexto(tipo);
         if(tn.includes("procedimiento")) return "#4CAF50"; 
@@ -636,7 +714,7 @@
         if(tn.includes("manual")) return "#F44336"; 
         if(tn.includes("instructivo")) return "#2196F3"; 
         if(tn.includes("caracterizacion") || tn.includes("caracterización")) return "#9C27B0"; 
-        if(tn.includes("politica")) return "#0ea5e9"; 
+        if(tn.includes("politica") || tn.includes("política")) return "#0ea5e9"; 
         if(tn.includes("anexo")) return "#8b5cf6"; 
         return "var(--teal)"; 
     }
@@ -679,49 +757,101 @@
             const arrayBuffer = await response.arrayBuffer();
             const workbook = XLSX.read(arrayBuffer, { type: "array", cellDates: true });
 
-            // Tomamos la primera hoja
             const firstSheetName = workbook.SheetNames[0];
-            
-            // Usamos {range: 3} porque la data real (los títulos de la tabla) empieza en la fila 4 del excel
             const data_raw = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName], { range: 3, raw: false, dateNF: "yyyy-mm-dd" });
+
+            reportesPorArea = {};
+
+            // Variables de contexto para forward-fill en celdas combinadas de Excel
+            let lastCtx = {
+                area: "",
+                macroproceso: "",
+                tipo: "",
+                codigo: "",
+                nombre: "",
+                lider: "",
+                fechaGen: ""
+            };
 
             data_raw.forEach(row => {
                 let nRow = {};
                 for (let key in row) { nRow[normalizarTexto(key)] = row[key]; }
                 
-                // Mapeamos a la columna PROCESO
-                let areaRaw = nRow["proceso"];
-                if (!areaRaw || areaRaw.toString().trim().toLowerCase() === "nan" || areaRaw.toString().trim().toLowerCase() === "na") return;
-                let area = areaRaw.toString().trim();
-                
-                // Usamos MACROPROCESO como categoría interna (antes área pertenece)
-                let areaPerRaw = nRow["macroproceso"];
-                let area_per = areaPerRaw ? areaPerRaw.toString().trim() : "General";
-                
-                let tipo = nRow["tipo de documentacion"] || nRow["tipo de documentación"] || "Desconocido";
-                let nombre = nRow["nombre del documento"] || "Sin Nombre";
-                let codigo = nRow["codigo del documento"] || "";
-                
-                // Mapeamos LÍDER RESPONSABLE al filtro de 'estado' de la interfaz
-                let lider = nRow["lider responsable"] || nRow["líder responsable"] || "Sin Especificar"; 
-                let fechaGen = nRow["fecha de actualizacion"] || nRow["fecha de actualización"] || "N/D";
-                
-                let indicador = nRow["nombre del indicador"] || "";
+                let areaVal = nRow["proceso"];
+                let macroVal = nRow["macroproceso"];
+                let tipoVal = nRow["tipo de documentacion"] || nRow["tipo de documentación"];
+                let codigoVal = nRow["codigo del documento"] || nRow["código del documento"];
+                let nombreVal = nRow["nombre del documento"];
+                let liderVal = nRow["lider responsable"] || nRow["líder responsable"];
+                let fechaVal = nRow["fecha de actualizacion"] || nRow["fecha de actualización"];
 
-                if (!reportesPorArea[area]) reportesPorArea[area] = { total: 0, subareas: {} };
-                if (!reportesPorArea[area].subareas[area_per]) reportesPorArea[area].subareas[area_per] = [];
+                let indFormula = nRow["indicadores"];
+                let indNombre = nRow["nombre del indicador"];
 
-                let tituloDocumento = (codigo ? codigo + " - " : "") + nombre.toString().trim();
+                // Actualización de contexto cuando la celda no está en blanco
+                if (esValido(areaVal)) lastCtx.area = String(areaVal).trim();
+                if (esValido(macroVal)) lastCtx.macroproceso = String(macroVal).trim();
+                if (esValido(tipoVal)) lastCtx.tipo = String(tipoVal).trim();
+                if (esValido(codigoVal)) lastCtx.codigo = String(codigoVal).trim();
+                if (esValido(nombreVal)) lastCtx.nombre = String(nombreVal).trim();
+                if (esValido(liderVal)) lastCtx.lider = String(liderVal).trim();
+                if (esValido(fechaVal)) lastCtx.fechaGen = String(fechaVal).trim();
 
-                reportesPorArea[area].subareas[area_per].push({
-                    actividad: tipo.toString().trim(),
-                    reporte: tituloDocumento,
-                    estado: lider.toString().trim(), // Este es el filtro de Líder
-                    fecha_generacion: fechaGen.toString().trim(),
-                    indicador: indicador.toString().trim()
-                });
-                
-                reportesPorArea[area].total++;
+                let currentArea = lastCtx.area;
+                if (!esValido(currentArea)) return;
+
+                let currentMacro = lastCtx.macroproceso || "General";
+                let currentTipo = lastCtx.tipo || "Desconocido";
+                let currentCodigo = lastCtx.codigo || "";
+                let currentNombre = lastCtx.nombre || "Sin Nombre";
+                let currentLider = lastCtx.lider || "Sin Especificar";
+                let currentFecha = lastCtx.fechaGen || "N/D";
+
+                // Clave para identificar de manera única cada documento
+                let docKey = (currentCodigo ? currentCodigo.toLowerCase() : "") + "|||" + currentNombre.toLowerCase();
+
+                if (!reportesPorArea[currentArea]) {
+                    reportesPorArea[currentArea] = { total: 0, subareas: {} };
+                }
+
+                if (!reportesPorArea[currentArea].subareas[currentMacro]) {
+                    reportesPorArea[currentArea].subareas[currentMacro] = [];
+                }
+
+                let subareaDocs = reportesPorArea[currentArea].subareas[currentMacro];
+
+                // Verificar si este documento ya fue agregado previamente
+                let docObj = subareaDocs.find(d => d.docKey === docKey);
+
+                if (!docObj) {
+                    let tituloDoc = (currentCodigo ? currentCodigo + " - " : "") + currentNombre;
+                    docObj = {
+                        docKey: docKey,
+                        actividad: currentTipo,
+                        codigo: currentCodigo,
+                        nombre_doc: currentNombre,
+                        reporte: tituloDoc,
+                        estado: currentLider, // Mapeado al filtro de líder
+                        fecha_generacion: currentFecha,
+                        indicadores: []
+                    };
+                    subareaDocs.push(docObj);
+                    reportesPorArea[currentArea].total++;
+                }
+
+                // Si la fila trae un indicador válido, lo consolidamos en el array del documento
+                if (esValido(indNombre)) {
+                    let formulaTxt = esValido(indFormula) ? String(indFormula).trim() : "Sin fórmula registrada";
+                    let nombreIndTxt = String(indNombre).trim();
+
+                    let yaExisteInd = docObj.indicadores.some(i => i.nombre === nombreIndTxt && i.formula === formulaTxt);
+                    if (!yaExisteInd) {
+                        docObj.indicadores.push({
+                            nombre: nombreIndTxt,
+                            formula: formulaTxt
+                        });
+                    }
+                }
             });
 
             loading.style.display = "none";
@@ -741,9 +871,11 @@
     // ----------------------------------------------------
     const summaryModal = document.getElementById("summaryModal");
     const detailModal = document.getElementById("detailModal");
+    const indicatorModal = document.getElementById("indicatorModal");
 
     document.getElementById("closeSummaryModal").onclick = () => summaryModal.style.display = "none";
     document.getElementById("closeDetailModal").onclick = () => detailModal.style.display = "none";
+    document.getElementById("closeIndicatorModal").onclick = () => indicatorModal.style.display = "none";
     
     document.getElementById("btnBack").onclick = () => {
         detailModal.style.display = "none";
@@ -753,6 +885,7 @@
     window.addEventListener("click", e => { 
         if (e.target === summaryModal) summaryModal.style.display = "none"; 
         if (e.target === detailModal) detailModal.style.display = "none"; 
+        if (e.target === indicatorModal) indicatorModal.style.display = "none"; 
     });
 
     // ABRE MODAL 1
@@ -815,7 +948,7 @@
         let currentDetailFilter = null; 
         let currentStateFilter = "Todos"; 
 
-        // Generar filtros de LÍDER RESPONSABLE
+        // Generar filtro por Líder
         stateFilterContainer.style.display = "flex";
         const uniqueStates = [...new Set(reports.map(r => r.estado))].sort();
         let stateHtml = `<span class="state-filters-label">Filtrar por Líder:</span>`;
@@ -881,23 +1014,53 @@
                 return a.reporte.localeCompare(b.reporte);
             });
 
+            currentDetailReports = sorted; // Guardamos para referencia del Modal 3
+
             if (sorted.length === 0) {
                 listContainer.innerHTML = "<p style='color: #666; font-size: 13px; font-style: italic; margin-top: 15px;'>No hay resultados para la combinación de filtros seleccionada.</p>";
                 return;
             }
 
             let htmlList = "";
-            sorted.forEach(rep => {
+            sorted.forEach((rep, docIdx) => {
                 let badgeColor = getColorByActividad(rep.actividad);
                 let fechaLab = rep.fecha_generacion && rep.fecha_generacion !== "N/D" ? rep.fecha_generacion : "N/D";
-                
                 let liderTxt = rep.estado !== "Sin Especificar" ? rep.estado : "No asignado";
-                let indicadorHtml = rep.indicador ? `<span><strong>Indicador:</strong> ${rep.indicador}</span>` : '';
-                
+
+                // Renderizar la lista de todos los indicadores del documento
+                let indicatorsHtml = "";
+                if (rep.indicadores && rep.indicadores.length > 0) {
+                    let indListHtml = "";
+                    rep.indicadores.forEach((ind, indIdx) => {
+                        indListHtml += `
+                            <div class="indicator-item">
+                                <span class="indicator-name">• ${ind.nombre}</span>
+                                <button class="btn-formula" data-doc-idx="${docIdx}" data-ind-idx="${indIdx}">
+                                    📐 Ver Fórmula
+                                </button>
+                            </div>
+                        `;
+                    });
+
+                    indicatorsHtml = `
+                        <div class="indicators-container">
+                            <div class="indicators-header">
+                                📊 Indicadores asociados (${rep.indicadores.length}):
+                            </div>
+                            ${indListHtml}
+                        </div>
+                    `;
+                } else {
+                    indicatorsHtml = `
+                        <div class="indicators-container" style="background:#f8fafc; color:#64748b; font-style:italic; font-size:11.5px;">
+                            Sin indicadores asociados registrados
+                        </div>
+                    `;
+                }
+
                 let metaHtml = `<div class="report-meta">
                     <span><strong>Líder:</strong> ${liderTxt}</span>
                     <span><strong>Última Act.:</strong> ${fechaLab}</span>
-                    ${indicadorHtml}
                 </div>`;
 
                 htmlList += `
@@ -907,14 +1070,27 @@
                         </div>
                         <div class="report-title">${rep.reporte}</div>
                         ${metaHtml}
+                        ${indicatorsHtml}
                     </div>
                 `;
             });
             
             listContainer.innerHTML = htmlList;
+
+            // Asignar los eventos de clic a los botones "Ver Fórmula"
+            listContainer.querySelectorAll('.btn-formula').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    let dIdx = parseInt(this.getAttribute('data-doc-idx'));
+                    let iIdx = parseInt(this.getAttribute('data-ind-idx'));
+                    let doc = currentDetailReports[dIdx];
+                    let ind = doc.indicadores[iIdx];
+                    showIndicatorModal(doc, ind);
+                });
+            });
         }
 
-        // Asignar clics al filtro de Líder
+        // Eventos del filtro de Líder
         stateFilterContainer.querySelectorAll('.state-pill').forEach(pill => {
             pill.addEventListener('click', function() {
                 currentStateFilter = this.getAttribute('data-state');
@@ -928,7 +1104,43 @@
         detailModal.style.display = "block";
     }
 
-    /* --- ZOOM Y PAN --- */
+    // FUNCIÓN PARA MOSTRAR EL MODAL 3 (FÓRMULA DEL INDICADOR)
+    function showIndicatorModal(doc, ind) {
+        const bodyEl = document.getElementById("indicatorModalBody");
+
+        bodyEl.innerHTML = `
+            <div class="indicator-meta-group">
+                <div class="indicator-meta-item">
+                    <span style="font-size:11px; text-transform:uppercase; color:var(--teal); font-weight:800; letter-spacing:0.5px;">Nombre del Indicador</span>
+                    <div style="font-weight: 700; color: #0f172a; font-size: 15px; margin-top: 2px; line-height: 1.3;">${escapeHtml(ind.nombre)}</div>
+                </div>
+
+                <div class="indicator-meta-item" style="background:#f1f5f9; padding:10px 12px; border-radius:6px; margin-top:4px;">
+                    <div style="margin-bottom:4px;"><strong>Documento:</strong> ${escapeHtml(doc.reporte)}</div>
+                    <div><strong>Líder Responsable:</strong> ${doc.estado !== "Sin Especificar" ? escapeHtml(doc.estado) : "No asignado"}</div>
+                </div>
+
+                <div class="indicator-meta-item" style="margin-top: 6px;">
+                    <strong style="color:var(--dark-blue); font-size:13px;">Fórmula / Cálculo (Columna INDICADORES):</strong>
+                    <div class="formula-box">${ind.formula ? escapeHtml(ind.formula) : 'Sin fórmula registrada'}</div>
+                </div>
+            </div>
+        `;
+
+        indicatorModal.style.display = "block";
+    }
+
+    function escapeHtml(text) {
+        if (!text) return "";
+        return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    /* --- CONTROLES DE ZOOM Y PAN --- */
     const chart = document.getElementById("orgChart");
     const viewport = document.getElementById("chartViewport");
     let scale = 1;
