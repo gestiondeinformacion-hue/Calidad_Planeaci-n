@@ -550,15 +550,16 @@
 
                     <div class="row" style="gap: 15px;">
                         <div class="branch">
-                            <div class="node n-teal interactive" data-title="DIRECCIÓN DE ACCESO, GESTIÓN DE ACCESO A SERVICIOS DE SALUD">Dirección Acceso<br>a Servicios</div>
+                            <!-- DIRECCIÓN ACCESO A SERVICIOS GLOBALIZADO CON SEGUIMIENTO A LA RED Y MEDICAMENTOS -->
+                            <div class="node n-teal interactive" data-title="DIRECCIÓN DE ACCESO, GESTIÓN DE ACCESO A SERVICIOS DE SALUD, SEGUIMIENTO A LA RED, MEDICAMENTOS, Seguimiento a la red, Medicamentos">Dirección Acceso<br>a Servicios</div>
                             <div class="connector-v" style="height: 10px;"></div>
                             <div class="sub-group">
                                 <div class="node n-yellow interactive" data-title="AUTORIZACIONES">Jef. Autorizaciones</div>
                                 <div class="node n-yellow interactive" data-title="CENTRO REGULADOR">Centro Regulador</div>
                                 <div class="node n-yellow interactive" data-title="CONCURRENCIA">Auditoría<br>Concurrente</div>
-                                <div class="node n-yellow interactive" data-title="SEGUIMIENTO A LA RED">Apoyo a Regiones</div>
+                                <!-- BOTÓN RESTAURADO SIN VINCULACIÓN A DATOS (MOSTRARÁ 0) -->
+                                <div class="node n-yellow interactive" data-title="Apoyo a Regiones">Apoyo a Regiones</div>
                                 <div class="node n-yellow interactive" data-title="ADQUISICIONES">Adquisiciones</div>
-                                <div class="node n-yellow interactive" data-title="MEDICAMENTOS">Medicamentos</div>
                                 <div class="node n-coord interactive" data-title="PROGRAMAS ESPECIALES">Prog. Especiales</div>
                             </div>
                         </div>
@@ -601,7 +602,7 @@
                     <div class="connector-v" style="height: 15px;"></div>
 
                     <div class="row" style="gap: 15px;">
-                        <!-- DIRECCIÓN TECNOLOGÍA Y SUS COORDINACIONES ACTUALIZADAS -->
+                        <!-- DIRECCIÓN TECNOLOGÍA Y SUS COORDINACIONES -->
                         <div class="branch">
                             <div class="node n-teal interactive" data-title="GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN, Dirección de Tecnologia e Información, Dirección de Tecnología e Información, Dirección Tecnología, Dirección de Tecnología, Coordinación de Analitica y Ciencia del dato, Coordinación de Infraestructura y Seguridad Informatica, Coordinación de Software y Arquitectura, Coordinación de Soporte Tecnologico">Dirección<br>Tecnología</div>
                             <div class="connector-v" style="height: 10px;"></div>
@@ -905,7 +906,7 @@
         if (e.target === indicatorModal) indicatorModal.style.display = "none"; 
     });
 
-    // ABRE MODAL 1 (Soporta búsqueda cruzada por Proceso y Macroproceso)
+    // ABRE MODAL 1
     document.querySelectorAll(".interactive").forEach(node => {
         node.addEventListener("click", () => {
             const searchTitles = node.getAttribute("data-title") || "";
