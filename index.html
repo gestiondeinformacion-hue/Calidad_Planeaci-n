@@ -206,7 +206,7 @@
         }
         .modal-content {
             background-color: white;
-            margin: 3% auto;
+            margin: 4% auto;
             border-radius: 10px;
             width: 95%;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -372,14 +372,16 @@
             gap: 6px;
         }
         .report-header { display: flex; justify-content: space-between; width: 100%; align-items: center; }
+        
+        /* Etiqueta / Badge formateada con Primera letra mayúscula */
         .report-badge {
             display: inline-block;
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 4px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: bold;
             color: white;
-            text-transform: uppercase;
+            text-transform: capitalize;
         }
         
         .report-title { font-weight: 700; color: var(--dark-blue); font-size: 14px; line-height: 1.3; }
@@ -1231,7 +1233,7 @@
                 htmlList += `
                     <div class="report-item">
                         <div class="report-header">
-                            <span class="report-badge" style="background-color:${badgeColor}">${rep.actividad}</span>
+                            <span class="report-badge" style="background-color:${badgeColor}">${formatearTexto(rep.actividad)}</span>
                         </div>
                         <div class="report-title">${rep.reporte}</div>
                         ${metaHtml}
@@ -1309,7 +1311,7 @@
     let scale = 1;
     function applyZoom() { chart.style.transform = `scale(${scale})`; }
     document.getElementById("zoomIn").onclick = () => { scale = Math.min(scale + 0.1, 1.6); applyZoom(); };
-    document.getElementById("zoomOut").onclick = () => { scale = Math.max(scale - 0.1, 0.4); applyZoom(); };
+    document.getElementById("zoomOut").onclick = () => { scale = Max.max(scale - 0.1, 0.4); applyZoom(); };
     document.getElementById("zoomReset").onclick = () => { scale = 1; applyZoom(); viewport.scrollTo({left:0, top:0}); };
 
     let isDragging = false, startX, startY, scrollLeft, scrollTop;
