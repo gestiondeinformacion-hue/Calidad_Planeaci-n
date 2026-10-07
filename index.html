@@ -206,7 +206,7 @@
         }
         .modal-content {
             background-color: white;
-            margin: 4% auto;
+            margin: 3% auto;
             border-radius: 10px;
             width: 95%;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -276,35 +276,48 @@
             margin-bottom: 15px;
         }
 
+        /* Listado Vertical de Tipos de Documento */
         .modal-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
-            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: #f8fafc;
             padding: 12px;
             border-radius: 8px;
             border: 1px solid var(--grey);
+            max-height: 240px;
+            overflow-y: auto;
         }
         
         .summary-item { 
             display: flex; 
-            align-items: flex-start; 
-            gap: 8px; 
+            align-items: center; 
+            justify-content: space-between;
+            gap: 12px; 
             cursor: pointer;
-            padding: 6px;
+            padding: 8px 12px;
             border-radius: 6px;
             transition: all 0.2s;
-            border: 1px solid transparent;
+            border: 1px solid #e2e8f0;
+            background-color: #ffffff;
         }
-        .summary-item:hover { background-color: #e2e8f0; }
+        .summary-item:hover { background-color: #e0f2fe; border-color: #7dd3fc; }
         .summary-item.active-filter {
             background-color: #e0f2fe;
-            border-color: #7dd3fc;
+            border-color: #0284c7;
+            font-weight: bold;
         }
-        
-        .summary-item .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-top:2px; flex-shrink:0;}
-        .summary-item .s-text { display: flex; flex-direction: column; font-size: 11.5px; color: #555; line-height: 1.2; }
-        .summary-item strong { font-size: 16px; color: var(--dark-blue); font-weight: 800; margin-top: 4px;}
+        .summary-item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--dark-blue);
+        }
+        .summary-item .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0;}
+        .summary-item strong.count-num { font-size: 14px; color: var(--dark-blue); font-weight: 800;}
+        .summary-item.is-zero { opacity: 0.6; background-color: #f8fafc; }
+        .summary-item.is-zero strong.count-num { color: #94a3b8; }
 
         /* Filtro de Procesos (Píldoras) */
         .state-filters {
@@ -338,7 +351,7 @@
         }
 
         .report-list {
-            max-height: 420px;
+            max-height: 380px;
             overflow-y: auto;
             padding-right: 5px;
             border-top: 1px solid var(--grey);
@@ -690,22 +703,22 @@
     let currentDetailReports = []; 
     const EXCEL_FILE_URL = "INVENTARIO DOCUMENTACIÓN E INDICADORES VF.xlsx?t=" + new Date().getTime();
 
-    // ORDEN SOLICITADO ESTRICTO PARA LOS TIPOS DE DOCUMENTO
-    const orderTipos = [
-        "politica",
-        "caracterizacion",
-        "manual",
-        "procedimiento",
-        "instructivo",
-        "modelo",
-        "programa",
-        "comite",
-        "formato",
-        "anexo",
-        "documento externo"
+    // LISTA MAESTRA OFICIAL Y ESTRICTA EN ORDEN DE 1 A 11
+    const masterTiposList = [
+        "Política",
+        "Caracterización",
+        "Manual",
+        "Procedimiento",
+        "Instructivo",
+        "Modelo",
+        "Programa",
+        "Comité",
+        "Formato",
+        "Anexo",
+        "Documento Externo"
     ];
 
-    // MAPEO DE NOMBRES DE PROCESOS (Con tildes y mayúsculas formateadas)
+    // MAPEO DE NOMBRES DE PROCESOS
     const processMap = {
         "GESTIÓN ESTRÁTEGICA": "Gestión Estratégica",
         "GESTIÓN ESTRATEGICA": "Gestión Estratégica",
@@ -769,8 +782,9 @@
 
     function getTipoOrderIndex(tipoStr) {
         let tn = normalizarTexto(tipoStr);
-        for (let i = 0; i < orderTipos.length; i++) {
-            if (tn === orderTipos[i] || tn.includes(orderTipos[i])) {
+        for (let i = 0; i < masterTiposList.length; i++) {
+            let masterNorm = normalizarTexto(masterTiposList[i]);
+            if (tn === masterNorm || tn.includes(masterNorm) || masterNorm.includes(tn)) {
                 return i;
             }
         }
@@ -1083,33 +1097,53 @@
                 processFilteredReports = reports.filter(r => r.proceso === currentProcessFilter);
             }
 
+            // 1. Conteo de tipos reales en el reporte filtrado
             let typeCounts = {};
             processFilteredReports.forEach(r => {
-                let t = r.actividad;
-                typeCounts[t] = (typeCounts[t] || 0) + 1;
+                let tNorm = normalizarTexto(r.actividad);
+                typeCounts[tNorm] = (typeCounts[tNorm] || 0) + 1;
             });
 
-            if (currentDetailFilter && !typeCounts[Object.keys(typeCounts).find(t => normalizarTexto(t) === currentDetailFilter)]) {
+            // 2. Construir la lista completa basada en masterTiposList + Tipos extra
+            let allTypesToDisplay = [...masterTiposList];
+            
+            processFilteredReports.forEach(r => {
+                let realType = r.actividad;
+                let realNorm = normalizarTexto(realType);
+                let alreadyInMaster = masterTiposList.some(m => normalizarTexto(m) === realNorm);
+                if (!alreadyInMaster && !allTypesToDisplay.some(x => normalizarTexto(x) === realNorm)) {
+                    allTypesToDisplay.push(realType);
+                }
+            });
+
+            if (currentDetailFilter && !allTypesToDisplay.some(t => normalizarTexto(t) === currentDetailFilter)) {
                 currentDetailFilter = null;
             }
 
             summaryGrid.innerHTML = "";
-            
-            // Ordenar los tipos de documento estrictamente según la lista prioritaria solicitada
-            let sortedTypes = Object.keys(typeCounts).sort((a, b) => {
-                let idxA = getTipoOrderIndex(a);
-                let idxB = getTipoOrderIndex(b);
-                if (idxA !== idxB) return idxA - idxB;
-                return a.localeCompare(b);
-            });
 
-            sortedTypes.forEach(t => {
-                let tNorm = normalizarTexto(t);
+            // Renderizado en LISTADO VERTICAL (Hacia abajo en orden estricto 1 a 11 + extras)
+            allTypesToDisplay.forEach((typeName, index) => {
+                let tNorm = normalizarTexto(typeName);
+                
+                let count = 0;
+                Object.keys(typeCounts).forEach(kNorm => {
+                    if (kNorm === tNorm || kNorm.includes(tNorm) || tNorm.includes(kNorm)) {
+                        count += typeCounts[kNorm];
+                    }
+                });
+
                 let isActive = (currentDetailFilter === tNorm) ? "active-filter" : "";
+                let isZero = (count === 0) ? "is-zero" : "";
+                let countVal = count > 0 ? count : "-";
+
                 summaryGrid.innerHTML += `
-                    <div class="summary-item ${isActive}" data-type="${tNorm}">
-                        <span class="dot" style="background-color:${getColorByActividad(t)}"></span>
-                        <div class="s-text">${t}<strong>${typeCounts[t]}</strong></div>
+                    <div class="summary-item ${isActive} ${isZero}" data-type="${tNorm}">
+                        <div class="summary-item-left">
+                            <span class="dot" style="background-color:${getColorByActividad(typeName)}"></span>
+                            <span><strong>${index + 1}.</strong> ${typeName}</span>
+                        </div>
+                        <strong class="count-num">${countVal}</strong>
                     </div>
                 `;
             });
@@ -1130,7 +1164,10 @@
             let finalReports = processFilteredReports;
             
             if (currentDetailFilter) {
-                finalReports = finalReports.filter(r => normalizarTexto(r.actividad) === currentDetailFilter);
+                finalReports = finalReports.filter(r => {
+                    let rNorm = normalizarTexto(r.actividad);
+                    return rNorm === currentDetailFilter || rNorm.includes(currentDetailFilter) || currentDetailFilter.includes(rNorm);
+                });
             }
             
             let sorted = finalReports.sort((a,b) => {
