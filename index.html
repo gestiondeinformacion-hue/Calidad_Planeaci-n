@@ -508,7 +508,7 @@
     <div class="chart-viewport" id="chartViewport">
         <div class="org-chart" id="orgChart">
             
-            <!-- RAIZ: GERENCIA GENERAL (TÍTULO ESTRUCTURAL SUPERIOR) -->
+            <!-- RAIZ: GERENCIA GENERAL -->
             <div class="branch">
                 <div class="node n-orange node-large">Gerencia General</div>
                 <div class="connector-v" style="height: 25px;"></div>
@@ -690,7 +690,7 @@
     let currentDetailReports = []; 
     const EXCEL_FILE_URL = "INVENTARIO DOCUMENTACIÓN E INDICADORES VF.xlsx?t=" + new Date().getTime();
 
-    // ORDEN SOLICITADO PARA LOS TIPOS DE DOCUMENTO
+    // ORDEN SOLICITADO ESTRICTO PARA LOS TIPOS DE DOCUMENTO
     const orderTipos = [
         "politica",
         "caracterizacion",
@@ -770,7 +770,7 @@
     function getTipoOrderIndex(tipoStr) {
         let tn = normalizarTexto(tipoStr);
         for (let i = 0; i < orderTipos.length; i++) {
-            if (tn.includes(orderTipos[i]) || orderTipos[i].includes(tn)) {
+            if (tn === orderTipos[i] || tn.includes(orderTipos[i])) {
                 return i;
             }
         }
@@ -1095,7 +1095,7 @@
 
             summaryGrid.innerHTML = "";
             
-            // Ordenar los tipos de documento según la secuencia personalizada solicitada
+            // Ordenar los tipos de documento estrictamente según la lista prioritaria solicitada
             let sortedTypes = Object.keys(typeCounts).sort((a, b) => {
                 let idxA = getTipoOrderIndex(a);
                 let idxB = getTipoOrderIndex(b);
