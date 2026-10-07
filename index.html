@@ -306,7 +306,7 @@
         .summary-item .s-text { display: flex; flex-direction: column; font-size: 11.5px; color: #555; line-height: 1.2; }
         .summary-item strong { font-size: 16px; color: var(--dark-blue); font-weight: 800; margin-top: 4px;}
 
-        /* Filtro de Líderes (Píldoras) */
+        /* Filtro de Procesos (Píldoras) */
         .state-filters {
             display: flex;
             flex-wrap: wrap;
@@ -557,7 +557,6 @@
                                 <div class="node n-yellow interactive" data-title="AUTORIZACIONES">Jef. Autorizaciones</div>
                                 <div class="node n-yellow interactive" data-title="CENTRO REGULADOR">Centro Regulador</div>
                                 <div class="node n-yellow interactive" data-title="CONCURRENCIA">Auditoría<br>Concurrente</div>
-                                <!-- BOTÓN RESTAURADO SIN VINCULACIÓN A DATOS (MOSTRARÁ 0) -->
                                 <div class="node n-yellow interactive" data-title="Apoyo a Regiones">Apoyo a Regiones</div>
                                 <div class="node n-yellow interactive" data-title="ADQUISICIONES">Adquisiciones</div>
                                 <div class="node n-coord interactive" data-title="PROGRAMAS ESPECIALES">Prog. Especiales</div>
@@ -662,7 +661,7 @@
                 <div class="modal-summary" id="detailModalSummary"></div>
                 
                 <div class="state-filters" id="detailStateFilterContainer">
-                    <!-- Botones de líder inyectados aquí -->
+                    <!-- Botones de proceso inyectados aquí -->
                 </div>
             </div>
             
@@ -691,6 +690,60 @@
     let currentDetailReports = []; 
     const EXCEL_FILE_URL = "INVENTARIO DOCUMENTACIÓN E INDICADORES VF.xlsx?t=" + new Date().getTime();
 
+    // ORDEN SOLICITADO PARA LOS TIPOS DE DOCUMENTO
+    const orderTipos = [
+        "politica",
+        "caracterizacion",
+        "manual",
+        "procedimiento",
+        "instructivo",
+        "modelo",
+        "programa",
+        "comite",
+        "formato",
+        "anexo",
+        "documento externo"
+    ];
+
+    // MAPEO DE NOMBRES DE PROCESOS (Con tildes y mayúsculas formateadas)
+    const processMap = {
+        "GESTIÓN ESTRÁTEGICA": "Gestión Estratégica",
+        "GESTIÓN ESTRATEGICA": "Gestión Estratégica",
+        "GESTIÓN DE LA INNOVACIÓN": "Gestión de la Innovación",
+        "GESTIÓN DEL RELACIONAMIENTO": "Gestión del Relacionamiento",
+        "ATENCIÓN AL USUARIO": "Atención al Usuario",
+        "GESTIÓN DEL ASEGURAMIENTO": "Gestión del Aseguramiento",
+        "ADQUISICIONES": "Adquisiciones",
+        "AUTORIZACIONES": "Autorizaciones",
+        "CENTRO REGULADOR": "Centro Regulador",
+        "CUENTAS MÉDICAS": "Cuentas Médicas",
+        "CUENTAS MEDICAS": "Cuentas Médicas",
+        "DIRECCIÓN DE ACCESO": "Acceso a Servicios de Salud",
+        "GESTIÓN DE ACCESO A SERVICIOS DE SALUD": "Acceso a Servicios de Salud",
+        "MEDICAMENTOS": "Medicamentos",
+        "PROGRAMAS ESPECIALES": "Programas Especiales",
+        "SEGUIMIENTO A LA RED": "Seguimiento a la Red",
+        "CONCURRENCIA": "Auditoría Concurrente",
+        "DIRECCIÓN GESTIÓN DEL RIESGO": "Gestión del Riesgo en Salud",
+        "GESTIÓN DEL RIESGO EN SALUD": "Gestión del Riesgo en Salud",
+        "ALTO COSTO": "Alto Costo",
+        "SALUD PÚBLICA": "Salud Pública",
+        "EPIDEMIOLOGÍA": "Epidemiología",
+        "GESTIÓN HUMANA": "Gestión Humana",
+        "GESTIÓN ADMINISTRATIVA": "Gestión Administrativa",
+        "TESORERIA Y CARTERA": "Tesorería y Cartera",
+        "TESORERÍA Y CARTERA": "Tesorería y Cartera",
+        "CONTABLIDAD Y PRESUPUESTO": "Contabilidad y Presupuesto",
+        "CONTABILIDAD Y PRESUPUESTO": "Contabilidad y Presupuesto",
+        "GESTION FINANCIERA": "Gestión Financiera",
+        "GESTIÓN FINANCIERA": "Gestión Financiera",
+        "GESTIÓN JURÍDICA Y LEGAL": "Gestión Jurídica y Legal",
+        "GESTIÓN DE TECNOLOGÍA DE LA INFORMACIÓN": "Gestión de Tecnología de la Información",
+        "GESTIÓN CALIDAD": "Gestión Calidad",
+        "AUDITORÍA INTERNA GENERAL": "Auditoría Interna General",
+        "OFICIAL CUMPLIMIENTO": "Oficial Cumplimiento"
+    };
+
     function normalizarTexto(texto) {
         if (!texto) return "";
         return texto.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
@@ -700,6 +753,28 @@
         if (!texto) return "";
         let s = String(texto).trim().toLowerCase();
         return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    function formatearNombreProceso(texto) {
+        if (!texto) return "Sin Especificar";
+        let clean = String(texto).trim();
+        let upper = clean.toUpperCase();
+        if (processMap[upper]) return processMap[upper];
+        
+        let words = clean.toLowerCase().split(/\s+/);
+        let minor = new Set(['de', 'del', 'la', 'los', 'las', 'en', 'y', 'a', 'e', 'o']);
+        let res = words.map((w, i) => (i > 0 && minor.has(w)) ? w : w.charAt(0).toUpperCase() + w.slice(1));
+        return res.join(" ");
+    }
+
+    function getTipoOrderIndex(tipoStr) {
+        let tn = normalizarTexto(tipoStr);
+        for (let i = 0; i < orderTipos.length; i++) {
+            if (tn.includes(orderTipos[i]) || orderTipos[i].includes(tn)) {
+                return i;
+            }
+        }
+        return 999;
     }
 
     function esValido(val) {
@@ -829,6 +904,8 @@
                 let currentLider = lastCtx.lider || "Sin Especificar";
                 let currentFecha = lastCtx.fechaGen || "N/D";
 
+                let currentProcesoFormatted = formatearNombreProceso(currentArea);
+
                 let docKey = (currentCodigo ? currentCodigo.toLowerCase() : "") + "|||" + currentNombre.toLowerCase();
 
                 if (!reportesPorArea[currentArea]) {
@@ -850,7 +927,9 @@
                         codigo: currentCodigo,
                         nombre_doc: currentNombre,
                         reporte: tituloDoc,
-                        estado: currentLider, 
+                        proceso_raw: currentArea,
+                        proceso: currentProcesoFormatted,
+                        lider: currentLider, 
                         fecha_generacion: currentFecha,
                         indicadores: []
                     };
@@ -985,27 +1064,27 @@
         const stateFilterContainer = document.getElementById("detailStateFilterContainer");
 
         let currentDetailFilter = null; 
-        let currentStateFilter = "Todos"; 
+        let currentProcessFilter = "Todos"; 
 
+        // Generar filtro por PROCESO (Formateado con primera mayúscula y tildes)
         stateFilterContainer.style.display = "flex";
-        const uniqueStates = [...new Set(reports.map(r => r.estado))].sort();
-        let stateHtml = `<span class="state-filters-label">Filtrar por Líder:</span>`;
-        stateHtml += `<div class="state-pill active-state" data-state="Todos">Todos</div>`;
-        uniqueStates.forEach(st => {
-            if(st && st !== "Sin Especificar" && st.toLowerCase() !== "nan") {
-                stateHtml += `<div class="state-pill" data-state="${st}">${st}</div>`;
-            }
+        const uniqueProcesses = [...new Set(reports.map(r => r.proceso))].filter(p => esValido(p)).sort((a,b) => a.localeCompare(b));
+        
+        let processHtml = `<span class="state-filters-label">Filtrar por Proceso:</span>`;
+        processHtml += `<div class="state-pill active-state" data-state="Todos">Todos</div>`;
+        uniqueProcesses.forEach(pr => {
+            processHtml += `<div class="state-pill" data-state="${pr}">${pr}</div>`;
         });
-        stateFilterContainer.innerHTML = stateHtml;
+        stateFilterContainer.innerHTML = processHtml;
 
         function renderDetailView() {
-            let stateFilteredReports = reports;
-            if (currentStateFilter !== "Todos") {
-                stateFilteredReports = reports.filter(r => r.estado === currentStateFilter);
+            let processFilteredReports = reports;
+            if (currentProcessFilter !== "Todos") {
+                processFilteredReports = reports.filter(r => r.proceso === currentProcessFilter);
             }
 
             let typeCounts = {};
-            stateFilteredReports.forEach(r => {
+            processFilteredReports.forEach(r => {
                 let t = r.actividad;
                 typeCounts[t] = (typeCounts[t] || 0) + 1;
             });
@@ -1015,7 +1094,16 @@
             }
 
             summaryGrid.innerHTML = "";
-            Object.keys(typeCounts).sort().forEach(t => {
+            
+            // Ordenar los tipos de documento según la secuencia personalizada solicitada
+            let sortedTypes = Object.keys(typeCounts).sort((a, b) => {
+                let idxA = getTipoOrderIndex(a);
+                let idxB = getTipoOrderIndex(b);
+                if (idxA !== idxB) return idxA - idxB;
+                return a.localeCompare(b);
+            });
+
+            sortedTypes.forEach(t => {
                 let tNorm = normalizarTexto(t);
                 let isActive = (currentDetailFilter === tNorm) ? "active-filter" : "";
                 summaryGrid.innerHTML += `
@@ -1039,13 +1127,16 @@
             });
 
             const listContainer = document.getElementById("detailReportList");
-            let finalReports = stateFilteredReports;
+            let finalReports = processFilteredReports;
             
             if (currentDetailFilter) {
                 finalReports = finalReports.filter(r => normalizarTexto(r.actividad) === currentDetailFilter);
             }
             
             let sorted = finalReports.sort((a,b) => {
+                let idxA = getTipoOrderIndex(a.actividad);
+                let idxB = getTipoOrderIndex(b.actividad);
+                if (idxA !== idxB) return idxA - idxB;
                 let cmp = a.actividad.localeCompare(b.actividad);
                 if (cmp !== 0) return cmp;
                 return a.reporte.localeCompare(b.reporte);
@@ -1062,7 +1153,7 @@
             sorted.forEach((rep, docIdx) => {
                 let badgeColor = getColorByActividad(rep.actividad);
                 let fechaLab = rep.fecha_generacion && rep.fecha_generacion !== "N/D" ? rep.fecha_generacion : "N/D";
-                let liderTxt = rep.estado !== "Sin Especificar" ? rep.estado : "No asignado";
+                let liderTxt = rep.lider !== "Sin Especificar" ? rep.lider : "No asignado";
 
                 let indicatorsHtml = "";
                 if (rep.indicadores && rep.indicadores.length > 0) {
@@ -1095,6 +1186,7 @@
                 }
 
                 let metaHtml = `<div class="report-meta">
+                    <span><strong>Proceso:</strong> ${rep.proceso}</span>
                     <span><strong>Líder:</strong> ${liderTxt}</span>
                     <span><strong>Última Act.:</strong> ${fechaLab}</span>
                 </div>`;
@@ -1127,7 +1219,7 @@
 
         stateFilterContainer.querySelectorAll('.state-pill').forEach(pill => {
             pill.addEventListener('click', function() {
-                currentStateFilter = this.getAttribute('data-state');
+                currentProcessFilter = this.getAttribute('data-state');
                 stateFilterContainer.querySelectorAll('.state-pill').forEach(el => el.classList.remove('active-state'));
                 this.classList.add('active-state');
                 renderDetailView(); 
@@ -1149,8 +1241,9 @@
                 </div>
 
                 <div class="indicator-meta-item" style="background:#f1f5f9; padding:10px 12px; border-radius:6px; margin-top:4px;">
+                    <div style="margin-bottom:4px;"><strong>Proceso:</strong> ${escapeHtml(doc.proceso)}</div>
                     <div style="margin-bottom:4px;"><strong>Documento:</strong> ${escapeHtml(doc.reporte)}</div>
-                    <div><strong>Líder Responsable:</strong> ${doc.estado !== "Sin Especificar" ? escapeHtml(doc.estado) : "No asignado"}</div>
+                    <div><strong>Líder Responsable:</strong> ${doc.lider !== "Sin Especificar" ? escapeHtml(doc.lider) : "No asignado"}</div>
                 </div>
 
                 <div class="indicator-meta-item" style="margin-top: 6px;">
